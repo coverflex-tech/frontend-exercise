@@ -1,5 +1,7 @@
 # Backend
 
+Make sure that you have [Postgres installed](https://www.postgresql.org/download/) and it has the default password `postgres` set on user `postgres` and the database server is up and running.
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
