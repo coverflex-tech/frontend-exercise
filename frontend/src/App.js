@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
+import Login from "./pages/Login";
+import ProductsList from "./pages/ProductsList";
 
 function App() {
   return (
@@ -40,20 +42,8 @@ function App() {
   );
 }
 
-function Login() {
-  return (
-    <div>
-      <h2>Login</h2>
-    </div>
-  );
-}
-
 function Checkout() {
   return <h2>Checkout</h2>;
-}
-
-function ProductsList() {
-  return <h2>ProductsList</h2>;
 }
 
 export default App;
