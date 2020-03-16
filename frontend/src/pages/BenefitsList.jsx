@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { Placeholder, Card, Header, Segment } from "semantic-ui-react";
-import { getProducts } from "../api/products";
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { Placeholder, Card, Header, Segment, Button } from "semantic-ui-react";
+
 import Benefit from "./Benefit";
 
-const BenefitsList = ({ user, toggleBenefit, checkoutList, setBenefits, benefits }) => {
-  const [isLoading, setIsLoading] = useState(false);
+const BenefitsList = ({
+  user,
+  toggleBenefit,
+  checkoutList,
+  benefitsLoading,
+  benefits,
+}) => {
+  const history = useHistory();
 
   const currentExpense = checkoutList.reduce(
     (acc, id) => acc + benefits.find(benefit => benefit.id === id).price,
@@ -13,25 +20,31 @@ const BenefitsList = ({ user, toggleBenefit, checkoutList, setBenefits, benefits
 
   const currentBalance = user.data.balance - currentExpense;
 
-  useEffect(() => {
-    setIsLoading(true);
-    getProducts().then(benefits => {
-      setIsLoading(false);
-      setBenefits(benefits);
-    });
-  }, [setBenefits]);
-
   return (
-    <div>
+    <React.Fragment>
       <Header as="h1">Welcome, {user.user_id}</Header>
-      {isLoading ? (
+      {benefitsLoading ? (
         <Placeholder>
           <Placeholder.Line />
         </Placeholder>
       ) : (
-        <Header as="h2">Current balance: {currentBalance}€</Header>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <Header as="h2" style={{ marginBottom: ".5em" }}>
+            Remaining balance: {currentBalance}€
+          </Header>
+          {checkoutList.length > 0 && (
+            <Button onClick={() => history.push("/checkout")}>
+              <Button.Content hidden>Checkout</Button.Content>
+            </Button>
+          )}
+        </div>
       )}
-      <Segment loading={isLoading} style={{ paddingHorizontal: "40px" }} placeholder>
+      <Segment loading={benefitsLoading} placeholder>
         <Card.Group centered>
           {benefits.map(({ id, name, price }) => (
             <Benefit
@@ -47,7 +60,7 @@ const BenefitsList = ({ user, toggleBenefit, checkoutList, setBenefits, benefits
           ))}
         </Card.Group>
       </Segment>
-    </div>
+    </React.Fragment>
   );
 };
 
