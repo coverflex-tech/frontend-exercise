@@ -45,6 +45,7 @@ defmodule Backend.MixProject do
       {:decimal, "~> 1.0"},
       {:timex, "~> 3.0"},
       {:tesla, "~> 1.3.0"},
+      {:cors_plug, "~> 2.0"},
     ]
   end
 

@@ -40,5 +40,7 @@ defmodule BackendWeb.Endpoint do
     key: "_backend_key",
     signing_salt: "bndp2Mba"
 
+  plug CORSPlug
+
   plug BackendWeb.Router
 end
