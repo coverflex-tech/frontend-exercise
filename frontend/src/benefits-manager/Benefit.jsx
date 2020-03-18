@@ -1,7 +1,7 @@
 import React from "react";
 import { Card, Button } from "semantic-ui-react";
 
-const Benefit = ({ id, name, price, selected, availableToBuy, toggleBenefit, owned }) => {
+const Benefit = ({ name, price, selected, availableToBuy, toggleBenefit, owned }) => {
   const renderButton = () => {
     if (owned) {
       return (

@@ -1,7 +1,7 @@
-import { API_BASE_URL } from "./constants";
+import { API_BASE_URL, ORDERS_PATH } from "./constants";
 
 export const postOrder = (items, userId) => {
-  return fetch(`${API_BASE_URL}/api/orders`, {
+  return fetch(`${API_BASE_URL}${ORDERS_PATH}`, {
     method: "POST",
     body: JSON.stringify({ items: items, user_id: userId }),
   })

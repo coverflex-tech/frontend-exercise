@@ -1,0 +1,15 @@
+.App {
+  padding-left: 3em;
+  padding-right: 3em;
+}
+
+.App-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.App-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

@@ -1,28 +1,23 @@
 import React, { useState } from "react";
 import { Button, Input, Form, Header } from "semantic-ui-react";
 import { useHistory } from "react-router-dom";
+import ROUTES from "./routes";
 
 const Login = ({ userLoading, getUser }) => {
   const [username, setUsername] = useState("");
 
   const history = useHistory();
+  const goToBenefitsList = () => history.push(ROUTES.BENEFITS_LIST);
 
   return (
     <React.Fragment>
-      <Header as="h1" textAlign="center">
-        Login
-      </Header>
-      <div
-        style={{
-          display: "flex",
-          direction: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+      <div className="App-login">
+        <Header as="h1" textAlign="center">
+          Login
+        </Header>
         <Form
           onSubmit={() => {
-            getUser(username).then(() => history.push("/benefits-list"));
+            getUser(username).then(goToBenefitsList);
           }}
         >
           <Form.Field>

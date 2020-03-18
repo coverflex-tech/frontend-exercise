@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { Placeholder, Card, Header, Segment, Button } from "semantic-ui-react";
 
 import Benefit from "./Benefit";
+import ROUTES from "./routes";
 
 const BenefitsList = ({
   user,
@@ -12,13 +13,16 @@ const BenefitsList = ({
   benefits,
 }) => {
   const history = useHistory();
+  const goToCheckout = () => history.push(ROUTES.CHECKOUT);
 
   const currentExpense = checkoutList.reduce(
-    (acc, id) => acc + benefits.find(benefit => benefit.id === id).price,
+    (sum, id) => sum + benefits.find(benefit => benefit.id === id).price,
     0
   );
 
   const currentBalance = user.data.balance - currentExpense;
+
+  const canGoToCheckout = checkoutList.length > 0;
 
   return (
     <React.Fragment>
@@ -28,34 +32,24 @@ const BenefitsList = ({
           <Placeholder.Line />
         </Placeholder>
       ) : (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Header as="h2" style={{ marginBottom: ".5em" }}>
-            Remaining balance: {currentBalance}€
-          </Header>
-          {checkoutList.length > 0 && (
-            <Button onClick={() => history.push("/checkout")}>
-              <Button.Content hidden>Checkout</Button.Content>
-            </Button>
-          )}
+        <div className="App-header">
+          <Header as="h2">Remaining balance: {currentBalance}€</Header>
+          <Button disabled={!canGoToCheckout} primary onClick={goToCheckout}>
+            Checkout
+          </Button>
         </div>
       )}
       <Segment loading={benefitsLoading} placeholder>
         <Card.Group centered>
           {benefits.map(({ id, name, price }) => (
             <Benefit
-              owned={user.data.product_ids.includes.id}
-              selected={checkoutList.includes(id)}
-              toggleBenefit={() => toggleBenefit(id)}
-              id={id}
+              key={id}
               name={name}
               price={price}
-              key={id}
+              selected={checkoutList.includes(id)}
               availableToBuy={currentBalance >= price}
+              toggleBenefit={() => toggleBenefit(id)}
+              owned={user.data.product_ids.includes(id)}
             />
           ))}
         </Card.Group>
