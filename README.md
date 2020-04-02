@@ -42,8 +42,6 @@ Build a UI to cover the following use cases:
 Our Backend Developer has kindly provided you a simple Phoenix server for you to test out your app.
 
 Let me guide you through how to set it up:
-  * Install [Postgres](https://www.postgresql.org/download/). Make sure `postgres` user has the default password `postgres`
-  * Run database server on `localhost:5432`
   * Install elixir: https://elixir-lang.org/install.html
   * Install project dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
