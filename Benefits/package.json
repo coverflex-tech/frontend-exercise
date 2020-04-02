@@ -4,14 +4,22 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
+    "clean": "watchman watch-del-all && rm -rf node_modules && yarn cache clean && yarn && cd ios && rm -rf Benefits.xcworkspace && rm -rf build && rm -rf Pods && rm -fr Podfile.lock && pod repo update && pod install && cd .. && cd android && ./gradlew clean && cd ..",
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/masked-view": "^0.1.7",
+    "@react-navigation/native": "^5.1.4",
+    "@react-navigation/stack": "^5.2.9",
     "react": "16.11.0",
-    "react-native": "0.62.0"
+    "react-native": "0.62.0",
+    "react-native-gesture-handler": "^1.6.1",
+    "react-native-reanimated": "^1.7.1",
+    "react-native-safe-area-context": "^0.7.3",
+    "react-native-screens": "^2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
