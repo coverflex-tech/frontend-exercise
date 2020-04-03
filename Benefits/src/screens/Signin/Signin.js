@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
+  Alert,
   Button,
   Keyboard,
   KeyboardAvoidingView,
@@ -9,13 +10,32 @@ import {
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
+import * as signinActions from '../../state/actions/signin';
+import * as signinSelectors from '../../state/selectors/signin';
 import { screenNames } from '../../navigation';
 
 import styles from './styles';
 
 const Signin = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [username, setUsername] = useState('');
+  const signinData = useSelector(signinSelectors.getData);
+  const signinError = useSelector(signinSelectors.getError);
+
+  useEffect(() => {
+    if (signinError) {
+      Alert.alert(
+        'Ooooops',
+        signinError
+      );
+    }
+
+    if (signinData) {
+      navigation.navigate(screenNames.HOME_SCREEN);
+    }
+  }, [ signinData, signinError ]);
 
   return (
     <View style={ styles.body }>
@@ -41,7 +61,7 @@ const Signin = ({ navigation }) => {
           />
           <Button
             color="green"
-            onPress={ () => navigation.navigate(screenNames.HOME_SCREEN) }
+            onPress={ () => username !== '' ? dispatch(signinActions.signin(username)) : {} }
             title="Signin"
           />
         </KeyboardAvoidingView>

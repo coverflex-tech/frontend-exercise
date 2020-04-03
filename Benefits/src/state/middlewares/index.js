@@ -1,3 +1,4 @@
+import api from './api';
 import { logger } from './logger';
 
-export { logger };
+export { api, logger };

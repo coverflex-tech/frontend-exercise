@@ -3,7 +3,7 @@ import { applyMiddleware, createStore } from 'redux';
 import { persistStore, persistReducer } from 'redux-persist';
 
 import rootReducer from './reducers';
-import { logger } from './middlewares';
+import { api, logger } from './middlewares';
 
 // Middleware: Redux persist config.
 const persistConfig = {
@@ -22,7 +22,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // Redux: Configure store from the state model.
 const store = createStore(
   persistedReducer,
-  applyMiddleware(logger),
+  applyMiddleware(api, logger),
 );
 
 // Middleware: Redux Persist Persister.
