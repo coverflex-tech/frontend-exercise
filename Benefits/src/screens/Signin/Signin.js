@@ -28,7 +28,7 @@ const Signin = ({ navigation }) => {
     if (signinError) {
       Alert.alert(
         'Ooooops',
-        signinError
+        signinError.message
       );
     }
 
