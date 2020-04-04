@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   Button,
   FlatList,
@@ -8,10 +8,12 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
+import * as ordersSelectors from '../../state/selectors/orders';
 import * as productsActions from '../../state/actions/products';
 import * as productsSelectors from '../../state/selectors/products';
 import * as signinActions from '../../state/actions/signin';
 import * as signinSelectors from '../../state/selectors/signin';
+import { screenNames } from '../../navigation';
 
 import ProductListItem from '../../components/ProductListItem';
 
@@ -19,6 +21,9 @@ import styles from './styles';
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
+  const [availableProducts, setAvailableProducts] = useState([]);
+  const [currentBalance, setCurrentBalance] = useState(0);
+  const currentCart = useSelector(ordersSelectors.getCart);
   const productsData = useSelector(productsSelectors.getData);
   const signinData = useSelector(signinSelectors.getData);
 
@@ -34,8 +39,24 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     if (!productsData) {
       dispatch(productsActions.getProducts());
+
+      return;
     }
-  }, [ productsData ]);
+
+    if (productsData && signinData) {
+      setAvailableProducts(productsData.products.filter(item => !signinData.user.data.product_ids.includes(item.id)));
+    }
+  }, [ productsData, signinData ]);
+
+  useEffect(() => {
+    var currentBalance = signinData.user.data.balance;
+
+    currentCart.forEach(item => {
+      currentBalance -= item.price;
+    });
+
+    setCurrentBalance(currentBalance);
+  }, [ currentCart ]);
 
   function didTapLogoutButton() {
     dispatch(signinActions.signout());
@@ -46,13 +67,21 @@ const Home = ({ navigation }) => {
     <View style={ styles.body }>
       <StatusBar barStyle="dark-content" />
       <View style={ styles.userInfo }>
-        <Text style={ styles.userNameText }>Username: { signinData.user.user_id }</Text>
+        <View style={ styles.currentInfo }>
+          <Text style={ styles.userNameText }>Username: { signinData ? signinData.user.user_id : null }</Text>
+          <Text style={ styles.currentBalanceText }>Current Balance: { currentBalance }</Text>
+        </View>
+        <Button
+          color="green"
+          onPress={ () => currentCart.length > 0 ? navigation.navigate(screenNames.ORDER_SCREEN) : {} }
+          title="Cart"
+        />
       </View>
       <View style={ styles.productsListView }>
         <FlatList
-          data={ productsData.products }
+          data={ availableProducts }
           renderItem={ ({ item }) => {
-            return (<ProductListItem product={ item }/>);
+            return (<ProductListItem currentBalance={ currentBalance } product={ item }/>);
           } }
         />
       </View>

@@ -8,20 +8,13 @@ const styles = StyleSheet.create({
     flexDirection  : 'column',
     justifyContent : 'flex-start',
   },
-  currentBalanceText: {
-    marginTop: 8,
+  orderListView: {
+    height: '60%',
+    width : '90%',
   },
-  productsListView: {
-    height: '85%',
-    width : '90%'
-  },
-  userInfo: {
-    flexDirection : 'row',
-    height        : '10%',
-    justifyContent: 'space-between',
-    paddingTop    : 10,
-    width         : '90%'
-  },
+  orderTotalText: {
+    marginBottom: 20,
+  }
 });
 
 export default styles;

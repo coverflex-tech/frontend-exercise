@@ -51,10 +51,7 @@ const Signin = ({ navigation }) => {
             autoCorrect={ false }
             clearButtonMode={ true }
             keyboardType={ 'default' }
-            onChangeText={ text => {
-              setUsername(text);
-              console.log(text);
-            } }
+            onChangeText={ text => setUsername(text) }
             placeholder={ 'Sign in with your username' }
             style={ styles.textInput }
             value={ username }
