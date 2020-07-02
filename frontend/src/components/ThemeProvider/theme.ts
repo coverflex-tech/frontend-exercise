@@ -7,6 +7,7 @@ const colors = {
     lightGrey: '#f7f8fa',
     darkGrey: '#4e4e4e',
     orange: '#ff9577',
+    red: '#d0021b',
 }
 
 export const GlobalStyle = createGlobalStyle`

@@ -15,7 +15,9 @@ const Actions = styled.div`
 `;
 
 const ErrorMessage = styled.div`
+    margin-top: 5px;
     color: ${({ theme }) => theme.colors.red};
+    font-size: 12px;
 `;
 
 const LoginForm = () => {
