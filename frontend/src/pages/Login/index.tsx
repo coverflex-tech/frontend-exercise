@@ -31,7 +31,7 @@ const Login = () => {
     const history = useHistory();
 
     useEffect(() => {
-        if(history && userDetails) {
+        if(history && userDetails && userDetails.userId) {
             history.replace('/');
         }
     }, [history, userDetails]);

@@ -4,10 +4,11 @@ interface RequestParams {
     userName: string;
 }
 
-const userLogin = ({ userName }: RequestParams) =>
+const loadUserDetails = ({ userName }: RequestParams) =>
   requestHandler.get<UserDetails>(
     `/api/users/${userName}`,
     {},
   );
 
-export default userLogin;
+export default loadUserDetails;
+

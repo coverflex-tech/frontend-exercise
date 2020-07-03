@@ -8,6 +8,9 @@ import Header from 'components/Header';
 const PrivateRoute: React.FC<RouteProps> = ({ ...restProps }) => {
     const { userDetails, logout } = useContext(AuthContext);
     if(!userDetails) {
+        return null;
+    }
+    if(!userDetails.userId) {
         return (
             <Redirect to={{
                 pathname: '/login'
@@ -16,7 +19,7 @@ const PrivateRoute: React.FC<RouteProps> = ({ ...restProps }) => {
         );
     }
 
-    const { user: { data: { balance } } } = userDetails;
+    const { balance } = userDetails;
     return (
         <ProductsContextProvider>
             <Header balance={balance} onLogout={logout} />

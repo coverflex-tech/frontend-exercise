@@ -51,11 +51,7 @@ export const ProductsContextProvider: React.FC = ({ children }) => {
   const updateProducts = useCallback(async () => {
       if(userDetails) {
         try {
-            const { user: {
-                data: {
-                    product_ids: userProductIds
-                }
-            }} = userDetails;
+            const { productIds: userProductIds } = userDetails;
             const productsResponse = (await listProducts()).data;
             const { products } = productsResponse;
             setAvailableProducts(products.filter(p => !userProductIds.includes(p.id)));
@@ -71,7 +67,7 @@ export const ProductsContextProvider: React.FC = ({ children }) => {
 
     const completePurchase = useCallback(async () => {
         if(userDetails) {
-            const { user: { user_id: userId } } = userDetails;
+            const { userId } = userDetails;
             setPurchasing(true);
             try {
                 await orderProducts({

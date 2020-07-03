@@ -14,8 +14,7 @@ const Actions = styled.div`
 const AvailableProducts = () => {
     const { availableProducts, checkoutCost, completePurchase } = useContext(ProductsContext);
     const { userDetails } = useContext(AuthContext);
-    const isPurchaseDisabled = !userDetails || 
-        userDetails.user.data.balance < checkoutCost;
+    const isPurchaseDisabled = !userDetails || userDetails.balance < checkoutCost;
 
     return (
         <>

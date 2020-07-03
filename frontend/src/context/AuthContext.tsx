@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import userLogin from 'services/api/user/userLogin';
+import React, { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import { FetchUserDetails, Logout } from 'store/user/actionTypes';
+import { useUserDetails } from 'store/user/selectors';
 
 interface AuthContextType {
     isLoggingIn: boolean;
-    userDetails?: UserDetails;
+    userDetails?: UserState;
     error?: string;
     getUserDetails: (userName: string) => void;
     logout: () => void;
@@ -17,28 +19,26 @@ const AuthContext = React.createContext<AuthContextType>({
 AuthContext.displayName = 'AuthContext';
 
 export const AuthContextProvider: React.FC = ({ children }) => {
-  const [userDetails, setUserDetails] = useState<UserDetails>();
-  const [isLoggingIn, setLoggingIn] = useState(false);
-  const [error, setError] = useState<string>();
+  const dispatch = useDispatch();
+  const userDetails = useUserDetails();
+  const { fetching, error } = userDetails;
 
   const logout = () => {
-      setUserDetails(undefined);
+      dispatch(Logout());
   }
 
-  const getUserDetails = async (userName: string) => {
-    setLoggingIn(true);
-    try {
-        const details = (await userLogin({ userName })).data;
-        setUserDetails(details);
-    } catch {
-        setError('Unable to perform login');
-    } finally {
-        setLoggingIn(false);
-    }
-  };
+  const getUserDetails = useCallback((userName: string) => {
+        dispatch(FetchUserDetails({ userName }))
+    }, [dispatch]);
 
   return (
-    <AuthContext.Provider value={{ userDetails, error, isLoggingIn, getUserDetails, logout }}>
+    <AuthContext.Provider value={{ 
+        userDetails, 
+        error: error ? 'Unable to login': undefined, 
+        isLoggingIn: fetching, 
+        getUserDetails, 
+        logout 
+    }}>
       {children}
     </AuthContext.Provider>
   );

@@ -9,8 +9,11 @@ import {
 } from 'react-router-dom';
 import Overview from 'pages/Overview';
 import PrivateRoute from 'components/PrivateRoute';
+import store from 'store';
+import { Provider } from 'react-redux';
 
 const App = () => (
+  <Provider store={store}>
   <ThemeProvider>
     <AuthContextProvider>
       <BrowserRouter>
@@ -21,6 +24,7 @@ const App = () => (
       </BrowserRouter>
     </AuthContextProvider>
   </ThemeProvider>
+  </Provider>
 );
 
 export default App;
