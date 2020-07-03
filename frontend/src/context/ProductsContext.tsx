@@ -76,6 +76,8 @@ export const ProductsContextProvider: React.FC = ({ children }) => {
                 });
                 getUserDetails(userId);
                 updateProducts();
+                setSelectedProducts([]);
+                setCheckoutCost(0);
             } catch {
                 setError('Unable to complete purchase');
             } finally {
