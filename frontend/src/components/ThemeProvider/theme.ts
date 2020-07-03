@@ -43,6 +43,7 @@ export const GlobalStyle = createGlobalStyle`
         height: 100%;
         min-height: 100vh;
         background-color: ${colors.darkBlue};
+        overflow-y: auto;
     }
     ol, ul {
         list-style: none;

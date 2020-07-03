@@ -4,6 +4,7 @@ import ProductCard from 'components/ProductCard';
 
 interface ProductListingProps {
     products: Product[];
+    selectable?: boolean;
 }
 
 const ProductListingContainer = styled.div`
@@ -22,14 +23,14 @@ const MissingProducts = styled.div`
     opacity: 0.4;
 `;
 
-const ProductListing: React.FC<ProductListingProps> = ({ products }) => {
+const ProductListing: React.FC<ProductListingProps> = ({ products, selectable }) => {
     if(products.length === 0) {
         return <MissingProducts>You don't have any products in this category</MissingProducts>
     }
     return (
         <ProductListingContainer>
             {products.map(p => (
-                <ProductCard key={p.id} {...p} />
+                <ProductCard key={p.id} {...p} selectable={selectable} />
             ))}
         </ProductListingContainer>
     )

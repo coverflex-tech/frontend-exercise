@@ -21,10 +21,10 @@ const ErrorMessage = styled.div`
 `;
 
 const LoginForm = () => {
-    const { login, error, isLoggingIn } = useContext(AuthContext);
+    const { getUserDetails, error, isLoggingIn } = useContext(AuthContext);
     const [userName, setUserName] = useState('');
     const handleLogin = () => {
-        login(userName);
+        getUserDetails(userName);
     }
     return (
         <LoginFormWrapper>
