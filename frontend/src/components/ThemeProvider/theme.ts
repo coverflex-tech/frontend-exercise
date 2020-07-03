@@ -87,6 +87,9 @@ export const GlobalStyle = createGlobalStyle`
     button:active {
         transform: scale(0.99);
     }
+    strong {
+        font-weight: 800;
+    }
 `;
 
 

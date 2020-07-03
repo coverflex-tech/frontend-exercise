@@ -26,6 +26,6 @@ const PrivateRoute: React.FC<RouteProps> = ({ ...restProps }) => {
             <Route {...restProps} />
         </ProductsContextProvider>
     );
-};
+}; 
 
 export default PrivateRoute;

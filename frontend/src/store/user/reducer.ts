@@ -28,6 +28,7 @@ const userReducer = (state: UserState = defaultState, action: ActionBase): UserS
         return {
             ...defaultState,
             error: true,
+            fetching: false,
         }
     }
     if(isType(action, FetchUserDetailsFailed)) {

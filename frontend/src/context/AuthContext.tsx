@@ -22,7 +22,6 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const dispatch = useDispatch();
   const userDetails = useUserDetails();
   const { fetching, error } = userDetails;
-
   const logout = () => {
       dispatch(Logout());
   }

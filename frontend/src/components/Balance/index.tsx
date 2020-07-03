@@ -1,23 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
 import { CurrencyBadge } from 'assets';
+import { Container, BalanceText } from './styled';
 
 interface BalanceProps {
     balance: number;
 }
-
-const Container = styled.div`
-    display: flex;
-    align-items: center;
-    margin: 0 20px;
-    svg {
-        fill: ${({ theme }) => theme.colors.orange};
-    }
-`;
-
-const BalanceText = styled.div`
-    margin-right: 5px;
-`;
 
 const Balance: React.FC<BalanceProps> = ({ balance }) => (
     <Container>
