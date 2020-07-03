@@ -6,10 +6,12 @@ interface AuthContextType {
     userDetails?: UserDetails;
     error?: string;
     login: (userName: string) => void;
+    logout: () => void;
 }
 const AuthContext = React.createContext<AuthContextType>({
     isLoggingIn: false,
-    login: () => {}
+    login: () => {},
+    logout: () => {},
 });
 
 AuthContext.displayName = 'AuthContext';
@@ -19,12 +21,15 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const [isLoggingIn, setLoggingIn] = useState(false);
   const [error, setError] = useState<string>();
 
+  const logout = () => {
+      setUserDetails(undefined);
+  }
+
   const login = async (userName: string) => {
     setLoggingIn(true);
     try {
         const userDetails = (await userLogin({ userName })).data;
         setUserDetails(userDetails);
-        alert("Login was successful");
     } catch {
         setError('Unable to perform login');
     } finally {
@@ -33,7 +38,7 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ userDetails, error, isLoggingIn, login }}>
+    <AuthContext.Provider value={{ userDetails, error, isLoggingIn, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

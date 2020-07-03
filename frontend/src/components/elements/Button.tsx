@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-const Button = styled.button`
-    background-color: ${({ theme }) => theme.colors.orange};
+const Button = styled.button<{isLink?: boolean}>`
+    background-color: ${({ theme, isLink }) => (isLink ? 'transparent' : theme.colors.orange)};
     color: ${({ theme }) => theme.colors.white};
 
     &:disabled {
@@ -11,7 +11,7 @@ const Button = styled.button`
         cursor: not-allowed;
     }
     :hover {
-        background-color: ${({ theme }) => theme.colors.orange};
+        background-color: ${({ theme, isLink }) => (isLink ? 'transparent' : theme.colors.orange)};
     }
 `;
 

@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
 import AuthContext from 'context/AuthContext';
+import Header from 'components/Header';
 
 
 const PrivateRoute: React.FC<RouteProps> = ({ ...restProps }) => {
-    const { userDetails } = useContext(AuthContext);
+    const { userDetails, logout } = useContext(AuthContext);
     if(!userDetails) {
         return (
             <Redirect to={{
@@ -13,8 +14,11 @@ const PrivateRoute: React.FC<RouteProps> = ({ ...restProps }) => {
             />
         );
     }
+
+    const { user: { data: { balance } } } = userDetails;
     return (
-        <Route {...restProps} />
+            <Header balance={balance} onLogout={logout} />
+            <Route {...restProps} />
     );
 };
 

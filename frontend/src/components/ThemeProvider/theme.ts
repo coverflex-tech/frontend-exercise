@@ -42,7 +42,6 @@ export const GlobalStyle = createGlobalStyle`
     #root {
         height: 100vh;
         background-color: ${colors.darkBlue};
-        padding: 2.2em;
     }
     ol, ul {
         list-style: none;
