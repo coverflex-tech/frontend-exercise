@@ -40,7 +40,8 @@ export const GlobalStyle = createGlobalStyle`
         line-height: 1;
     }
     #root {
-        height: 100vh;
+        height: 100%;
+        min-height: 100vh;
         background-color: ${colors.darkBlue};
     }
     ol, ul {
