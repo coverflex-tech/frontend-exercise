@@ -1,3 +1,8 @@
 export interface UserState {
-  user: string;
+  user?: User;
+}
+
+export interface User {
+  username: string;
+  balance: number;
 }

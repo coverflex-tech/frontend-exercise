@@ -1,3 +1,4 @@
+import { User } from "./user";
 import { ActionTypes } from "./types";
 
 export const fetchUserRequest = (username: string) => {
@@ -7,10 +8,10 @@ export const fetchUserRequest = (username: string) => {
   };
 };
 
-export const fetchUserSuccess = (username: string) => {
+export const fetchUserSuccess = (user: User) => {
   return {
     type: ActionTypes.FETCH_USER_SUCCESS,
-    username,
+    user,
   };
 };
 

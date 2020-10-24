@@ -10,21 +10,21 @@ import {
 import "./App.css";
 
 import { ProductCalatog, SignIn } from "./screens";
-import { StoreState } from "./store";
+import { StoreState, User } from "./store";
 
 interface AppProps {
-  username: string;
+  user?: User;
 }
 
 class AppComponent extends React.Component<AppProps, {}> {
   render() {
-    const { username } = this.props;
+    const { user } = this.props;
     return (
       <div className="App">
         <Router>
           <div>
             <ul>
-              <li>{username}</li>
+              <li>{user && `${user.username} - ${user.balance}`}</li>
               <li>
                 <Link to="/products">Catalog</Link>
               </li>
@@ -58,7 +58,7 @@ class AppComponent extends React.Component<AppProps, {}> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-  username: state.userState.user,
+  user: state.userState.user,
 });
 
 export default connect(mapStateToProps)(AppComponent);

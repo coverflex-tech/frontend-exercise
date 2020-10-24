@@ -2,9 +2,7 @@ import { AnyAction } from "redux";
 import { ActionTypes } from "../types";
 import { UserState } from "./types";
 
-export const initialUserState: UserState = {
-  user: "",
-};
+export const initialUserState: UserState = {};
 
 export const userReducer = (state = initialUserState, action: AnyAction) => {
   switch (action.type) {
@@ -12,12 +10,12 @@ export const userReducer = (state = initialUserState, action: AnyAction) => {
     case ActionTypes.FETCH_USER_ERROR:
       return {
         ...state,
-        user: "",
+        user: undefined,
       };
     case ActionTypes.FETCH_USER_SUCCESS:
       return {
         ...state,
-        user: action.username,
+        user: action.user,
       };
     default:
       return state;
