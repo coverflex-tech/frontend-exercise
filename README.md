@@ -2,7 +2,7 @@
 
 Hello dear frontend developer!
 
-Your Project Manager needs you to quickly build an app that can be used by company employees  to self-manage their benefits.
+Your Project Manager needs you to quickly build an app that can be used by company employees to self-manage their benefits.
 Our Designer is really busy right now, so you'll also need to help us on the UI side. However, you should focus on the UX side of it, because we wanted to start testing out inside the company. But don't worry, our Backend team has already a service up and running for you to use.
 Each employee has a total of 500 FlexPoints, that they can spend on a list of available benefits.
 
