@@ -7,11 +7,17 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faCartPlus } from "@fortawesome/free-solid-svg-icons";
-import { fetchProductsRequest, StoreState, Product } from "../../store";
+import {
+  fetchProductsRequest,
+  StoreState,
+  Product,
+  addProductToCart,
+} from "../../store";
 
 interface ProductCalatogProps {
   products: Product[];
   getProducts: () => void;
+  addToCart: (product: Product) => void;
 }
 
 class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
@@ -20,7 +26,8 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
   }
 
   render() {
-    const { products } = this.props;
+    const { products, addToCart } = this.props;
+
     return (
       <>
         <h1 style={{ marginBottom: "32px" }}>Benefits Calatog</h1>
@@ -61,9 +68,10 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
                           position: "absolute",
                           bottom: "8px",
                           right: "8px",
+                          cursor: "pointer",
                         }}
                         onClick={(): void => {
-                          alert("buy");
+                          addToCart(product);
                         }}
                       />
                     </Card.Body>
@@ -86,6 +94,7 @@ const mapStateToProps = (state: StoreState) => {
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   getProducts: () => dispatch(fetchProductsRequest()),
+  addToCart: (product: Product) => dispatch(addProductToCart(product)),
 });
 
 export const ProductCalatog = connect(

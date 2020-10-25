@@ -6,15 +6,16 @@ import Nav from "react-bootstrap/Nav";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 
-import { StoreState, User } from "../../store";
+import { StoreState, User, Product } from "../../store";
 
 interface TopbarProps {
   user?: User;
+  shoppingCart: Product[];
 }
 
 class TopbarComponent extends React.Component<TopbarProps, {}> {
   render() {
-    const { user } = this.props;
+    const { user, shoppingCart } = this.props;
 
     return (
       <Navbar bg="light" expand="lg" fixed="top">
@@ -42,7 +43,7 @@ class TopbarComponent extends React.Component<TopbarProps, {}> {
                       fontSize: "12px",
                     }}
                   >
-                    0
+                    {shoppingCart.length}
                   </span>
                   <FontAwesomeIcon icon={faShoppingCart} />
                 </div>
@@ -57,6 +58,7 @@ class TopbarComponent extends React.Component<TopbarProps, {}> {
 
 const mapStateToProps = (state: StoreState) => ({
   user: state.userState.user,
+  shoppingCart: state.cartState.products,
 });
 
 export const Topbar = connect(mapStateToProps)(TopbarComponent);
