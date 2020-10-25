@@ -15,6 +15,10 @@ export const fetchUser = (userId: string): Promise<FetchUserOutput> => {
   );
 };
 
-export const fetchProducts = () => {
+export interface FetchProductsOutput {
+  products: { id: string; name: string; price: number }[];
+}
+
+export const fetchProducts = (): Promise<FetchProductsOutput> => {
   return fetch(getApiUrl(`/api/products`)).then((response) => response.json());
 };

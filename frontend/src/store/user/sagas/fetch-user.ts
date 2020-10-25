@@ -1,7 +1,8 @@
 import { AnyAction } from "redux";
 import { call, put, takeLatest } from "redux-saga/effects";
 import { fetchUser, FetchUserOutput } from "../../../api";
-import { fetchUserSuccess, fetchUserError, ActionTypes } from "../..";
+import { ActionTypes } from "../..";
+import { fetchUserSuccess, fetchUserError } from "..";
 
 function* handleFetchUserRequest(action: AnyAction): Generator {
   try {
