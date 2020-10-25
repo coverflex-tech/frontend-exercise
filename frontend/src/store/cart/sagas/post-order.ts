@@ -13,8 +13,8 @@ function* handlePostOrderRequest(action: AnyAction): Generator {
       items,
       user_id: user.username,
     })) as PostOrderOutput;
-    // TODO: update user state
-    yield put(postOrderSuccess());
+
+    yield put(postOrderSuccess(order.order.data));
   } catch (e) {}
 }
 

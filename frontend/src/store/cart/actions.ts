@@ -1,5 +1,6 @@
 import { Product } from "../products";
 import { ActionTypes } from "../types";
+import { OrderSuccess } from "./types";
 
 export const addProductToCart = (product: Product) => {
   return {
@@ -22,8 +23,9 @@ export const postOrderRequest = (items: Product[]) => {
   };
 };
 
-export const postOrderSuccess = () => {
+export const postOrderSuccess = (result: OrderSuccess) => {
   return {
     type: ActionTypes.POST_ORDER_SUCCESS,
+    result,
   };
 };
