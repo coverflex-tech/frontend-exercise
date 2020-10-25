@@ -6,7 +6,11 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCoins, faCartPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCoins,
+  faCartPlus,
+  faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 import {
   fetchProductsRequest,
   StoreState,
@@ -17,6 +21,7 @@ import {
 interface ProductCalatogProps {
   products: Product[];
   getProducts: () => void;
+  shoppingCart: Product[];
   addToCart: (product: Product) => void;
 }
 
@@ -26,7 +31,7 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
   }
 
   render() {
-    const { products, addToCart } = this.props;
+    const { products, addToCart, shoppingCart } = this.props;
 
     return (
       <>
@@ -36,6 +41,9 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
         <Container fluid>
           <Row>
             {products.map((product) => {
+              const isInCart = shoppingCart.some(
+                (cartItem) => cartItem.id === product.id
+              );
               return (
                 <Col key={product.id} md={{ span: 6 }}>
                   <Card
@@ -63,15 +71,15 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
                         />
                       </Card.Subtitle>
                       <FontAwesomeIcon
-                        icon={faCartPlus}
+                        icon={isInCart ? faCheck : faCartPlus}
                         style={{
                           position: "absolute",
                           bottom: "8px",
                           right: "8px",
-                          cursor: "pointer",
+                          cursor: isInCart ? "initial" : "pointer",
                         }}
                         onClick={(): void => {
-                          addToCart(product);
+                          !isInCart && addToCart(product);
                         }}
                       />
                     </Card.Body>
@@ -89,6 +97,7 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
 const mapStateToProps = (state: StoreState) => {
   return {
     products: state.productState.products,
+    shoppingCart: state.cartState.products,
   };
 };
 
