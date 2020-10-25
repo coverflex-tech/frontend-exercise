@@ -5,7 +5,7 @@ const getApiUrl = (path: string): string => {
 export interface FetchUserOutput {
   user: {
     user_id: string;
-    data: { balance: number };
+    data: { balance: number; product_ids: string[] };
   };
 }
 

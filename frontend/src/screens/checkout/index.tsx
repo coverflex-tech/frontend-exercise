@@ -92,7 +92,11 @@ class CheckoutComponent extends React.Component<CheckoutProps, {}> {
               variant="primary"
               disabled={user.balance < cartTotal}
               onClick={(): void => {
-                if(window.confirm(`Are you sure you want to buy the benefits for ${cartTotal} points?`)) {
+                if (
+                  window.confirm(
+                    `Are you sure you want to buy the benefits for ${cartTotal} points?`
+                  )
+                ) {
                   submitOrder(shoppingCart);
                 }
               }}

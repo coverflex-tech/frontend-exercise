@@ -5,6 +5,7 @@ export interface UserState {
 export interface User {
   username: string;
   balance: number;
+  purchases: string[];
 }
 
 export interface FetchUserInput {

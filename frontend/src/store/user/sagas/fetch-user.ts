@@ -12,6 +12,7 @@ function* handleFetchUserRequest(action: AnyAction): Generator {
       fetchUserSuccess({
         username: user.user.user_id,
         balance: user.user.data.balance,
+        purchases: user.user.data.product_ids,
       })
     );
 

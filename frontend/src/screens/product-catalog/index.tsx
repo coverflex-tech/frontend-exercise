@@ -16,6 +16,8 @@ import {
   StoreState,
   Product,
   addProductToCart,
+  getUser,
+  User,
 } from "../../store";
 
 interface ProductCalatogProps {
@@ -23,6 +25,7 @@ interface ProductCalatogProps {
   getProducts: () => void;
   shoppingCart: Product[];
   addToCart: (product: Product) => void;
+  user: User;
 }
 
 class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
@@ -31,7 +34,7 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
   }
 
   render() {
-    const { products, addToCart, shoppingCart } = this.props;
+    const { products, addToCart, shoppingCart, user } = this.props;
 
     return (
       <>
@@ -44,6 +47,13 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
               const isInCart = shoppingCart.some(
                 (cartItem) => cartItem.id === product.id
               );
+
+              const alreadyPurchased = user.purchases.some(
+                (purchase) => purchase === product.id
+              );
+
+              const canOrder = !isInCart && !alreadyPurchased;
+
               return (
                 <Col key={product.id} md={{ span: 6 }}>
                   <Card
@@ -71,15 +81,15 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
                         />
                       </Card.Subtitle>
                       <FontAwesomeIcon
-                        icon={isInCart ? faCheck : faCartPlus}
+                        icon={!canOrder ? faCheck : faCartPlus}
                         style={{
                           position: "absolute",
                           bottom: "8px",
                           right: "8px",
-                          cursor: isInCart ? "initial" : "pointer",
+                          cursor: !canOrder ? "initial" : "pointer",
                         }}
                         onClick={(): void => {
-                          !isInCart && addToCart(product);
+                          canOrder && addToCart(product);
                         }}
                       />
                     </Card.Body>
@@ -98,6 +108,7 @@ const mapStateToProps = (state: StoreState) => {
   return {
     products: state.productState.products,
     shoppingCart: state.cartState.products,
+    user: getUser(state) as User,
   };
 };
 
