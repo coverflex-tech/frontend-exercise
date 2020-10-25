@@ -1,5 +1,5 @@
-import { User, FetchUserInput } from "./user";
-import { ActionTypes } from "./types";
+import { User, FetchUserInput } from "./types";
+import { ActionTypes } from "../types";
 
 export const fetchUserRequest = (payload: FetchUserInput) => {
   return {

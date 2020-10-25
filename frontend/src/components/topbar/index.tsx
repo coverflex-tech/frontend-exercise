@@ -35,7 +35,12 @@ class TopbarComponent extends React.Component<TopbarProps, {}> {
               <Link to="/checkout">
                 <div style={{ position: "relative" }}>
                   <span
-                    style={{ position: "absolute", bottom: "-5px", left: "-3px", fontSize: '12px' }}
+                    style={{
+                      position: "absolute",
+                      bottom: "-5px",
+                      left: "-3px",
+                      fontSize: "12px",
+                    }}
                   >
                     0
                   </span>
