@@ -2,18 +2,28 @@ import React from "react";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import ListGroup from "react-bootstrap/ListGroup";
+import Button from "react-bootstrap/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCoins, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { StoreState, Product, removeProductFromCart } from "../../store";
+import {
+  StoreState,
+  Product,
+  removeProductFromCart,
+  postOrderRequest,
+  getUser,
+  User,
+} from "../../store";
 
 interface CheckoutProps {
   shoppingCart: Product[];
+  user: User;
+  submitOrder: (items: Product[]) => void;
   removeCartItem: (itemId: string) => void;
 }
 
 class CheckoutComponent extends React.Component<CheckoutProps, {}> {
   render() {
-    const { shoppingCart, removeCartItem } = this.props;
+    const { shoppingCart, removeCartItem, submitOrder, user } = this.props;
 
     const cartTotal = shoppingCart.reduce((acc, cartItem) => {
       return acc + cartItem.price;
@@ -78,6 +88,17 @@ class CheckoutComponent extends React.Component<CheckoutProps, {}> {
                 Total
               </h6>
             </div>
+            <Button
+              variant="primary"
+              disabled={user.balance < cartTotal}
+              onClick={(): void => {
+                if(window.confirm(`Are you sure you want to buy the benefits for ${cartTotal} points?`)) {
+                  submitOrder(shoppingCart);
+                }
+              }}
+            >
+              Buy Now
+            </Button>
           </>
         )}
       </>
@@ -88,11 +109,13 @@ class CheckoutComponent extends React.Component<CheckoutProps, {}> {
 const mapStateToProps = (state: StoreState) => {
   return {
     shoppingCart: state.cartState.products,
+    user: getUser(state) as User,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   removeCartItem: (itemId: string) => dispatch(removeProductFromCart(itemId)),
+  submitOrder: (items: Product[]) => dispatch(postOrderRequest(items)),
 });
 
 export const Checkout = connect(

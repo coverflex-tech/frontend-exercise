@@ -14,3 +14,16 @@ export const removeProductFromCart = (productId: string) => {
     productId,
   };
 };
+
+export const postOrderRequest = (items: Product[]) => {
+  return {
+    type: ActionTypes.POST_ORDER_REQUEST,
+    items,
+  };
+};
+
+export const postOrderSuccess = () => {
+  return {
+    type: ActionTypes.POST_ORDER_SUCCESS,
+  };
+};

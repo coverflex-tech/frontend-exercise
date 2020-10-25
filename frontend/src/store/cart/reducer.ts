@@ -18,6 +18,11 @@ export const cartReducer = (state = initialCartState, action: AnyAction) => {
           (cartItem) => cartItem.id !== action.productId
         ),
       };
+    case ActionTypes.POST_ORDER_SUCCESS:
+      return {
+        ...state,
+        products: [],
+      };
     default:
       return state;
   }
