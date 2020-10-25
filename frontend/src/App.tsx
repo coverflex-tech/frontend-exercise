@@ -1,56 +1,73 @@
 import React from "react";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import "./App.css";
 
 import { ProductCalatog, SignIn } from "./screens";
-import { StoreState, User } from "./store";
+import { Topbar } from "./components";
+import { StoreState, isAuthenticated } from "./store";
+
+const RoutesConfig = [
+  {
+    path: "/products",
+    component: ProductCalatog,
+    withAuth: true,
+  },
+  {
+    path: "/sign-in",
+    component: SignIn,
+    withAuth: false,
+  },
+];
 
 interface AppProps {
-  user?: User;
+  isAuthenticated: boolean;
 }
 
 class AppComponent extends React.Component<AppProps, {}> {
   render() {
-    const { user } = this.props;
+    const { isAuthenticated } = this.props;
+    const defaultPage = isAuthenticated ? "/products" : "/sign-in";
     return (
       <div className="App">
         <Router>
-          <div>
-            <ul>
-              <li>{user && `${user.username} - ${user.balance}`}</li>
-              <li>
-                <Link to="/products">Catalog</Link>
-              </li>
-              <li>
-                <Link to="/checkout">Shopping Cart</Link>
-              </li>
-            </ul>
+          <Topbar />
+          <Container fluid style={{ marginTop: "62px" }}>
+            <Row>
+              <Col md={{ span: 6, offset: 3 }}>
+                <Route exact path="/">
+                  <Redirect
+                    to={{
+                      pathname: defaultPage,
+                    }}
+                  />
+                </Route>
+                {RoutesConfig.map((route) => {
+                  if (route.withAuth === true && isAuthenticated === false) {
+                    return (
+                      <Redirect
+                        key={route.path}
+                        to={{
+                          pathname: "/sign-in",
+                        }}
+                      />
+                    );
+                  }
 
-            <hr />
-
-            <Switch>
-              <Route exact path="/">
-                <Redirect
-                  to={{
-                    pathname: "/sign-in",
-                  }}
-                />
-              </Route>
-              <Route path="/products">
-                <ProductCalatog />
-              </Route>
-              <Route path="/sign-in">
-                <SignIn />
-              </Route>
-            </Switch>
-          </div>
+                  return (
+                    <Route
+                      key={route.path}
+                      path={route.path}
+                      component={route.component}
+                    ></Route>
+                  );
+                })}
+              </Col>
+            </Row>
+          </Container>
         </Router>
       </div>
     );
@@ -58,7 +75,7 @@ class AppComponent extends React.Component<AppProps, {}> {
 }
 
 const mapStateToProps = (state: StoreState) => ({
-  user: state.userState.user,
+  isAuthenticated: isAuthenticated(state),
 });
 
 export default connect(mapStateToProps)(AppComponent);

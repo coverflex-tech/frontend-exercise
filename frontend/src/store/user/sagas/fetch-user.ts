@@ -5,7 +5,7 @@ import { fetchUserSuccess, fetchUserError, ActionTypes } from "../..";
 
 function* handleFetchUserRequest(action: AnyAction): Generator {
   try {
-    const { username } = action;
+    const { username, callbacks } = action.payload;
     const user = (yield call(fetchUser, username)) as FetchUserOutput;
     yield put(
       fetchUserSuccess({
@@ -13,6 +13,8 @@ function* handleFetchUserRequest(action: AnyAction): Generator {
         balance: user.user.data.balance,
       })
     );
+
+    yield call(callbacks.success);
   } catch (e) {
     yield put(fetchUserError());
   }

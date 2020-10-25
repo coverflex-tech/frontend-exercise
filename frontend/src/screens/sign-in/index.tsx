@@ -1,12 +1,14 @@
 import React from "react";
+import { History } from "history";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { fetchUserRequest } from "../../store";
+import { fetchUserRequest, FetchUserInput } from "../../store";
 
 interface SignInProps {
-  signIn: (username: string) => any;
+  history: History;
+  signIn: (payload: FetchUserInput) => any;
 }
 
 interface SingInState {
@@ -24,18 +26,25 @@ class SignInComponent extends React.Component<SignInProps, SingInState> {
 
   render() {
     return (
-      <div>
+      <>
         <h1>Sign In</h1>
         <Form
           onSubmit={(event: React.SyntheticEvent): void => {
             event.preventDefault();
             const { signIn } = this.props;
             const { username } = this.state;
-            signIn(username);
+            signIn({
+              username,
+              callbacks: {
+                success: (): void => {
+                  this.props.history.push("/products");
+                },
+              },
+            });
           }}
         >
           <Form.Group controlId="formSignIn">
-            <Form.Label>User name</Form.Label>
+            <Form.Label>Welcome to Coverflex Benefits</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter username"
@@ -53,13 +62,13 @@ class SignInComponent extends React.Component<SignInProps, SingInState> {
             Let's Go
           </Button>
         </Form>
-      </div>
+      </>
     );
   }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  signIn: (username: string) => dispatch(fetchUserRequest(username)),
+  signIn: (payload: FetchUserInput) => dispatch(fetchUserRequest(payload)),
 });
 
 export const SignIn = connect(null, mapDispatchToProps)(SignInComponent);
