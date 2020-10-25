@@ -7,3 +7,10 @@ export const addProductToCart = (product: Product) => {
     product,
   };
 };
+
+export const removeProductFromCart = (productId: string) => {
+  return {
+    type: ActionTypes.REMOVE_PRODUCT_FROM_CART,
+    productId,
+  };
+};
