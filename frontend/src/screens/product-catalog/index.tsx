@@ -55,10 +55,11 @@ class ProductCalatogComponent extends React.Component<ProductCalatogProps, {}> {
               const canOrder = !isInCart && !alreadyPurchased;
 
               return (
-                <Col key={product.id} md={{ span: 6 }}>
+                <Col key={product.id} lg={{ span: 6 }}>
                   <Card
                     style={{
                       width: "100%",
+                      height: "175px",
                       position: "relative",
                       padding: "8px",
                       marginBottom: "8px",
