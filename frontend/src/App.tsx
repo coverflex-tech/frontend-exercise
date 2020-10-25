@@ -6,7 +6,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "./App.css";
 
-import { ProductCalatog, SignIn } from "./screens";
+import { ProductCalatog, SignIn, Checkout } from "./screens";
 import { Topbar } from "./components";
 import { StoreState, isAuthenticated } from "./store";
 
@@ -20,6 +20,11 @@ const RoutesConfig = [
     path: "/sign-in",
     component: SignIn,
     withAuth: false,
+  },
+  {
+    path: "/checkout",
+    component: Checkout,
+    withAuth: true,
   },
 ];
 
