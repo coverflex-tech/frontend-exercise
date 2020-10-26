@@ -6,15 +6,16 @@ import { postOrderSuccess } from "..";
 
 function* handlePostOrderRequest(action: AnyAction): Generator {
   try {
+    const { items, callbacks } = action.input;
     const user = (yield select(getUser)) as User;
-    const items = action.items.map((item: Product) => item.id);
 
     const order = (yield call(postOrder, {
-      items,
+      items: items.map((item: Product) => item.id),
       user_id: user.username,
     })) as PostOrderOutput;
 
     yield put(postOrderSuccess(order.order.data));
+    yield call(callbacks.success);
   } catch (e) {}
 }
 

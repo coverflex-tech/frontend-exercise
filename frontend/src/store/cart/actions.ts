@@ -1,6 +1,6 @@
 import { Product } from "../products";
 import { ActionTypes } from "../types";
-import { OrderSuccess } from "./types";
+import { OrderSuccess, OrderInput } from "./types";
 
 export const addProductToCart = (product: Product) => {
   return {
@@ -16,10 +16,10 @@ export const removeProductFromCart = (productId: string) => {
   };
 };
 
-export const postOrderRequest = (items: Product[]) => {
+export const postOrderRequest = (input: OrderInput) => {
   return {
     type: ActionTypes.POST_ORDER_REQUEST,
-    items,
+    input,
   };
 };
 

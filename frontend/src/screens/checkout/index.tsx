@@ -1,4 +1,5 @@
 import React from "react";
+import { History } from "history";
 import { Dispatch } from "redux";
 import { connect } from "react-redux";
 import ListGroup from "react-bootstrap/ListGroup";
@@ -12,18 +13,27 @@ import {
   postOrderRequest,
   getUser,
   User,
+  OrderInput,
 } from "../../store";
 
 interface CheckoutProps {
+  history: History;
   shoppingCart: Product[];
+  loading: boolean;
   user: User;
-  submitOrder: (items: Product[]) => void;
+  submitOrder: (input: OrderInput) => void;
   removeCartItem: (itemId: string) => void;
 }
 
 class CheckoutComponent extends React.Component<CheckoutProps, {}> {
   render() {
-    const { shoppingCart, removeCartItem, submitOrder, user } = this.props;
+    const {
+      shoppingCart,
+      removeCartItem,
+      submitOrder,
+      user,
+      loading,
+    } = this.props;
 
     const cartTotal = shoppingCart.reduce((acc, cartItem) => {
       return acc + cartItem.price;
@@ -90,18 +100,25 @@ class CheckoutComponent extends React.Component<CheckoutProps, {}> {
             </div>
             <Button
               variant="primary"
-              disabled={user.balance < cartTotal}
+              disabled={loading || user.balance < cartTotal}
               onClick={(): void => {
                 if (
                   window.confirm(
                     `Are you sure you want to buy the benefits for ${cartTotal} points?`
                   )
                 ) {
-                  submitOrder(shoppingCart);
+                  submitOrder({
+                    items: shoppingCart,
+                    callbacks: {
+                      success: (): void => {
+                        this.props.history.push("/products");
+                      },
+                    },
+                  });
                 }
               }}
             >
-              Buy Now
+              {loading ? "Loading..." : "Buy Now"}
             </Button>
           </>
         )}
@@ -113,13 +130,14 @@ class CheckoutComponent extends React.Component<CheckoutProps, {}> {
 const mapStateToProps = (state: StoreState) => {
   return {
     shoppingCart: state.cartState.products,
+    loading: state.cartState.loading,
     user: getUser(state) as User,
   };
 };
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   removeCartItem: (itemId: string) => dispatch(removeProductFromCart(itemId)),
-  submitOrder: (items: Product[]) => dispatch(postOrderRequest(items)),
+  submitOrder: (input: OrderInput) => dispatch(postOrderRequest(input)),
 });
 
 export const Checkout = connect(

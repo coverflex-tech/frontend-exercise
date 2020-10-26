@@ -2,7 +2,7 @@ import { AnyAction } from "redux";
 import { ActionTypes } from "../types";
 import { CartState } from "./types";
 
-export const initialCartState: CartState = { products: [] };
+export const initialCartState: CartState = { products: [], loading: false };
 
 export const cartReducer = (state = initialCartState, action: AnyAction) => {
   switch (action.type) {
@@ -18,10 +18,16 @@ export const cartReducer = (state = initialCartState, action: AnyAction) => {
           (cartItem) => cartItem.id !== action.productId
         ),
       };
+    case ActionTypes.POST_ORDER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
     case ActionTypes.POST_ORDER_SUCCESS:
       return {
         ...state,
         products: [],
+        loading: false,
       };
     default:
       return state;

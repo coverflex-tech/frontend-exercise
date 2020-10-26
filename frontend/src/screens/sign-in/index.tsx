@@ -24,6 +24,11 @@ class SignInComponent extends React.Component<SignInProps, SingInState> {
     };
   }
 
+  private get disableButton(): boolean {
+    const { username } = this.state;
+    return username === "";
+  }
+
   render() {
     return (
       <>
@@ -58,7 +63,7 @@ class SignInComponent extends React.Component<SignInProps, SingInState> {
               Use this username for future sign ins
             </Form.Text>
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={this.disableButton}>
             Let's Go
           </Button>
         </Form>
