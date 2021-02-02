@@ -1,7 +1,11 @@
-[*.{js,jsx,ts,tsx,vue}]
+[*.{js,jsx,ts,tsx,vue,mjs}]
+charset = utf-8
+end_of_line = lf
 indent_style = space
 indent_size = 2
-end_of_line = lf
+ij_continuation_indent_size = 2
 trim_trailing_whitespace = true
 insert_final_newline = true
-max_line_length = 100
+ij_html_do_not_indent_children_of_tags = html,body,script
+ij_html_new_line_after_last_attribute = when multiline
+ij_html_new_line_before_first_attribute = when multiline
