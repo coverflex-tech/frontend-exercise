@@ -1,32 +1,71 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+  <div
+    id="app"
+    class="bg-gradient-red"
+  >
+    <div class="container-max-width">
+      <nav-bar />
+      <router-view />
     </div>
-    <router-view/>
   </div>
 </template>
 
+<script>
+import { mapGetters } from 'vuex';
+
+import NavBar from '@/components/NavBar.vue';
+
+export default {
+  name: 'App',
+  components: {
+    NavBar,
+  },
+  computed: {
+    ...mapGetters({
+      isAuthenticated: 'auth/isAuthenticated',
+    }),
+  },
+  methods: {},
+};
+</script>
+
 <style lang="scss">
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap-vue/src/index.scss';
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  color: #333;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  color: var(--default-color);
+  background: linear-gradient(180deg, #f5ebe3, #f5ebe3 16%, #eae0d9 28%, #e6e5e2);
+
+  --default-color: #4e526b;
+  --accent-color: #fe685b;
 }
 
-#nav {
-  padding: 30px;
+.bg-gradient-red {
+  height: 100vh;
+  background: linear-gradient(180deg, #f5ebe3, #f5ebe3 16%, #eae0d9 28%, #e6e5e2);
+}
 
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.container-max-width {
+  max-width: 1440px;
+  margin: 0 auto;
 }
 </style>
