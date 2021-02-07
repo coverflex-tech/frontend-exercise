@@ -21,78 +21,62 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-navbar-nav class="d-flex align-items-center flex-row justify-content-center">
-          <b-nav-item>
+          <b-nav-item active>
             en
           </b-nav-item>
           /
-          <b-nav-item active>
+          <b-nav-item disabled>
             pt
           </b-nav-item>
         </b-navbar-nav>
+
+        <b-nav-text
+          v-if="isAuthenticated"
+          class="ml-3 mr-2"
+        >
+          Welcome, {{ userId }}!
+        </b-nav-text>
 
         <b-nav-item
           id="popover-button-sync"
           @click="clickSignInOrSignOut"
         >
-          {{ signInOrSignOutText }}
+          {{ isAuthenticated ? 'logout' : 'login' }}
         </b-nav-item>
-        <b-popover
-          :show.sync="showSignInPopover"
-          target="popover-button-sync"
-          triggers="focus"
-          title="Sign in as employee"
-          placement="bottomright"
-          @hide="onSignInPopoverHide"
-        >
-          <div>
-            <b-form-input
-              v-model="signInUsername"
-              placeholder="Enter your username"
-            />
-            <div class="mt-2 ml-auto">
-              <b-button class="">
-                sign in
-                <b-spinner label="Spinning" />
-              </b-button>
-            </div>
-          </div>
-        </b-popover>
+        <sign-in-popover
+          ref="signInPopover"
+        />
       </b-navbar-nav>
     </b-collapse>
   </b-navbar>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
+import SignInPopover from '@/components/SignInPopover.vue';
 
 export default {
   name: 'NavBar',
+  components: {
+    SignInPopover,
+  },
   data() {
-    return {
-      showSignInPopover: false,
-      signInUsername: '',
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
+      userId: 'auth/userId',
     }),
-    signInOrSignOutText() {
-      return this.isAuthenticated ? 'logout' : 'login';
-    },
   },
   methods: {
+    ...mapActions({
+      signOut: 'auth/signOut',
+    }),
     clickSignInOrSignOut() {
       if (this.isAuthenticated) {
-        console.log('Will sign out!');
-      } else {
-        this.showSignInPopover = true;
-        console.log('Will sign in!');
+        this.signOut();
       }
-    },
-    onSignInPopoverHide() {
-      // Reset username
-      this.signInUsername = '';
     },
   },
 };
