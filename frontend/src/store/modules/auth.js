@@ -29,52 +29,43 @@ const STATUS = {
   SIGNED_OUT: 5,
 };
 
-function getLocalTokens() {
+function getLocalStorageData() {
   if (!storage) {
     return {};
   }
   return {
-    accessToken: storage.getItem('access-token') || '',
-    refreshToken: storage.getItem('refresh-token') || '',
+    userId: storage.getItem('user-id') || null,
   };
 }
 
-// function setLocalTokensAndUpdateRequestHeader(tokens) {
-//   // TODO: move from local storage to cookies
-//   const { accessToken, refreshToken } = tokens;
-//   if (accessToken) {
-//     // updateRequestHeaders(accessToken);
-//     if (storage) {
-//       storage.setItem('access-token', accessToken);
-//     }
-//   }
-//   if (refreshToken) {
-//     if (storage) {
-//       storage.setItem('refresh-token', refreshToken);
-//     }
-//   }
-// }
-
-function clearLocalTokensAndUpdateRequestHeader() {
-  // TODO: move from local storage to cookies
-  if (storage) {
-    storage.removeItem('access-token');
-    storage.removeItem('refresh-token');
+function setLocalStorage({ userId }) {
+  if (userId && storage) {
+    storage.setItem('user-id', userId);
   }
-  // updateRequestHeaders();
+}
+
+function clearLocalStorage() {
+  if (storage) {
+    storage.removeItem('user-id');
+  }
 }
 
 const initialState = () => ({
   status: '',
-  accessToken: getLocalTokens().accessToken,
-  refreshToken: getLocalTokens().refreshToken,
-  refreshTokenPromise: undefined,
+  userId: getLocalStorageData().userId,
+  user: null,
+  signInPopoverIsOpen: false,
 });
 
 const getters = {
-  isAuthenticated: (state) => !!state.accessToken,
-  accessToken: (state) => state.accessToken, // needed for upload of impulzes
+  isAuthenticated: (state) => !!state.user,
+  user: (state) => state.user,
+  userId: (state) => state.user && state.user.user_id,
+  userProducts: (state) => state.user && state.user.data && state.user.data.product_ids,
+  userBalance: (state) => state.user && state.user.data && state.user.data.balance,
+  // accessToken: (state) => state.accessToken, // needed for upload of impulzes
   isSigningOut: (state) => state.status === STATUS.SIGNING_OUT,
+  signInPopoverIsOpen: (state) => state.signInPopoverIsOpen,
 };
 
 const mutations = {
@@ -90,45 +81,31 @@ const mutations = {
   AUTH_REQUEST: (state) => {
     state.status = STATUS.SIGNING_IN;
   },
-  AUTH_SUCCESS: (state, tokens) => {
+  AUTH_SUCCESS: (state, user) => {
     state.status = STATUS.SIGNED_IN;
-    state.accessToken = tokens.accessToken;
-    state.refreshToken = tokens.refreshToken;
-  },
-  AUTH_SET_ACCESS_TOKEN_FOR_JOURNEY_ACCESS: (state, token) => {
-    state.accessToken = token;
+    state.user = user;
   },
   AUTH_ERROR: (state) => {
     state.status = STATUS.ERROR;
   },
   AUTH_SIGNING_OUT: (state) => {
     state.status = STATUS.SIGNING_OUT;
-    state.refreshToken = '';
+    state.user = null;
   },
-  AUTH_SET_REFRESH_TOKEN_PROMISE: (state, payload) => {
-    state.refreshTokenPromise = payload;
+  UPDATE_SIGN_IN_POPOVER_STATUS: (state, status) => {
+    state.signInPopoverIsOpen = status;
   },
 };
 
 const actions = {
   // eslint-disable-next-line no-shadow
-  async initialize({ dispatch, getters }) {
-    const tokens = getLocalTokens();
-    if (tokens.refreshToken) {
-      Vue.prototype.$log.debug('DEBUG 20190701: refresh token exists, will request a new access token');
-      // await new Promise(resolve => setTimeout(resolve, 10000));
-      await dispatch('refreshTokenAndFetchAccount');
-      Vue.prototype.$log.debug('DEBUG 20190701: got new access token and fetched account, will now continue');
-      // updateRequestHeaders(tokens.accessToken); // update or delete the Authorization
-      if (getters.isAuthenticated) {
-        // await new Promise(resolve => setTimeout(resolve, 10000));
-        dispatch('authenticated', tokens);
-      } else {
-        const keepInSameRoute = true;
-        dispatch('signOut', { keepInSameRoute });
-      }
+  async initialize({ dispatch }) {
+    const localStorageData = getLocalStorageData();
+    if (localStorageData.userId) {
+      Vue.prototype.$log.debug('User is signed in; refresh data');
+      await dispatch('signIn', localStorageData.user);
     } else {
-      Vue.prototype.$log.debug('DEBUG 20190701: no refreshToken; sign out');
+      Vue.prototype.$log.debug('No user; sign out');
       const keepInSameRoute = true;
       dispatch('signOut', { keepInSameRoute });
     }
@@ -137,28 +114,37 @@ const actions = {
   injectRouter(_, routerParam) {
     router = routerParam;
   },
-  authenticated({ commit, dispatch }, tokens) {
+  authenticated({ commit }, user) {
     Vue.prototype.$log.debug('Authenticated.');
-    commit('AUTH_SUCCESS', tokens);
-    // PushNotification.signedIn();
-    dispatch('translation/fetchTranslationsAfterLogin', null, { root: true });
-  },
-  setAccessTokenForJourneyAccess({ commit }, token) {
-    commit('AUTH_SET_ACCESS_TOKEN_FOR_JOURNEY_ACCESS', token);
+    commit('AUTH_SUCCESS', user);
   },
   // eslint-disable-next-line no-shadow
-  signIn: async ({ commit, dispatch }, payload) => {
+  signIn: async ({ commit, dispatch, rootGetters }, userId) => {
     // context: {dispatch: ƒ, commit: ƒ, getters: {…}, state: {…}, rootGetters: {…}, …}
     // payload: {user: {…}, requestOptions: {…}}
     commit('AUTH_REQUEST');
     try {
-      const response = await Vue.prototype.$http.get(`/api/users/${payload.userId}`);
-      debugger;
-      dispatch('authenticated', response);
-      // dispatch('global/userSignedIn', null, { root: true });
+      const response = await Vue.prototype.$http.get(`/api/users/${userId}`);
+      const STATUS_OK = 200;
+      if (response.status !== STATUS_OK) {
+        Vue.prototype.$log.warn('Error signing in:', response);
+        return null;
+      }
+      if (!('user' in response.data)) {
+        Vue.prototype.$log.warn('Missing "user" in response data:', response.data);
+        return null;
+      }
+      const { user } = response.data;
+      setLocalStorage({ userId: user.user_id });
+      dispatch('authenticated', user);
+      // Are there products? (they are cleared on sign out)
+      if (!rootGetters['products/allProducts'].length) {
+        dispatch('products/fetchProducts', null, { root: true });
+      }
+      return user;
     } catch (error) {
       Vue.prototype.$log.warn('Error signing in:', error);
-      clearLocalTokensAndUpdateRequestHeader(); // if the request fails, remove user tokens
+      clearLocalStorage(); // if the request fails, remove user tokens
       commit('AUTH_ERROR', error);
       // reject(error);
       throw error;
@@ -171,20 +157,18 @@ const actions = {
     commit('AUTH_SIGNING_OUT');
     // PushNotification.signedOut();
     try {
-      if ('Authorization' in Vue.prototype.$http.defaults.headers.common) {
-        await Vue.prototype.$http.delete('/auth/logout', { cancelToken: null });
-      } else {
-        // HTTP has no Authorization headers; skip the sign out server-side
-      }
+      // if ('Authorization' in Vue.prototype.$http.defaults.headers.common) {
+      //   await Vue.prototype.$http.delete('/auth/logout', { cancelToken: null });
+      // } else {
+      //   // HTTP has no Authorization headers; skip the sign out server-side
+      // }
     } catch (error) {
       Vue.prototype.$log.error(error);
     } finally {
-      clearLocalTokensAndUpdateRequestHeader(); // remove user tokens
+      clearLocalStorage();
       commit('RESET_STORE');
       // Clear other store modules
-      commit('account/RESET_STORE', null, { root: true });
-      commit('global/RESET_STORE', null, { root: true });
-      commit('socket/RESET_STORE', null, { root: true });
+      commit('products/RESET_STORE', null, { root: true });
       if (refresh) {
         Vue.prototype.$log.debug('Sign out and refresh.');
         window.location.reload();
@@ -194,6 +178,9 @@ const actions = {
       }
       // resolve();
     }
+  },
+  updateSignInPopoverOpenStatus: async ({ commit }, status) => {
+    commit('UPDATE_SIGN_IN_POPOVER_STATUS', status);
   },
 };
 

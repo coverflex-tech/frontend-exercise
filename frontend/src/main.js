@@ -25,6 +25,10 @@ Vue.use(VueLogger, {
   showConsoleColors: true,
 });
 
+// Initialize stores
+store.dispatch('auth/initialize');
+store.dispatch('products/initialize');
+
 new Vue({
   router,
   store,
