@@ -30,6 +30,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "assets/_custom.scss";
 @import '~bootstrap/scss/bootstrap';
 @import '~bootstrap-vue/src/index.scss';
 
@@ -56,7 +57,10 @@ body {
   background: linear-gradient(180deg, #f5ebe3, #f5ebe3 16%, #eae0d9 28%, #e6e5e2);
 
   --default-color: #4e526b;
-  --accent-color: #fe685b;
+  --accent-color: #fe685b; /* hsl(5, 99%, 68%) */
+  //--accent-color-hsl-c: 5, 99%; /* the base color */
+  //--accent-color-hsl-l: 68%; /* the initial lightness */
+  //--accent-color-darker: hsl(var(--accent-color-hsl-c), calc(var(--accent-color-hsl-l) - 5%));
 }
 
 .bg-gradient-red {
@@ -67,5 +71,9 @@ body {
 .container-max-width {
   max-width: 1440px;
   margin: 0 auto;
+}
+
+.spinner-border {
+  color: var(--accent-color);
 }
 </style>
