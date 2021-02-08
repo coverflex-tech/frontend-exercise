@@ -6,12 +6,14 @@ const initialState = () => ({
   busyLoadingProducts: false,
   busySubscribingProducts: false,
   products: [],
+  selectedProductsIds: [],
 });
 
 const getters = {
   busyLoadingProducts: (state) => state.busyLoadingProducts,
   busySubscribingProducts: (state) => state.busySubscribingProducts,
   allProducts: (state) => state.products,
+  selectedProductsIds: (state) => state.selectedProductsIds,
 };
 
 const mutations = {
@@ -32,6 +34,18 @@ const mutations = {
   },
   SET_PRODUCTS: (state, products) => {
     state.products = products;
+  },
+  CLEAR_PRODUCT_SELECTION: (state) => {
+    state.selectedProductsIds = [];
+  },
+  TOGGLE_PRODUCT_SELECTION: (state, productId) => {
+    if (state.selectedProductsIds.includes(productId)) {
+      // Remove
+      state.selectedProductsIds = state.selectedProductsIds.filter((pId) => pId !== productId);
+    } else {
+      // Add
+      state.selectedProductsIds.push(productId);
+    }
   },
 };
 
@@ -56,7 +70,11 @@ const actions = {
       commit('SET_BUSY_LOADING_PRODUCTS', false);
     }
   },
-  subscribeProducts: async ({ commit, dispatch, rootGetters }, productIds) => {
+  toggleProductSelection: ({ commit }, productId) => {
+    commit('TOGGLE_PRODUCT_SELECTION', productId);
+  },
+  // eslint-disable-next-line no-shadow, object-curly-newline
+  subscribeProducts: async ({ commit, dispatch, getters, rootGetters }) => {
     try {
       commit('SET_BUSY_SUBSCRIBING_PRODUCTS', true);
       // input {"order": {"items": ["product-1", "product-2"], "user_id": "johndoe"}}
@@ -67,12 +85,14 @@ const actions = {
       const userId = rootGetters['auth/userId'];
       const postData = {
         order: {
-          items: productIds,
+          items: getters.selectedProductsIds,
           user_id: userId,
         },
       };
       const response = await Vue.prototype.$http.post('/api/orders', postData);
       if (response && response.data && response.data.order) {
+        // Clear selection
+        commit('CLEAR_PRODUCT_SELECTION');
         // Update user
         dispatch('auth/signIn', userId, { root: true });
         return true;

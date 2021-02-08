@@ -1,8 +1,10 @@
 <template>
   <div class="product-list-wrapper">
-    <h4>
-      Available Products
-    </h4>
+    <div class="mb-4">
+      <h5>
+        Available Benefits
+      </h5>
+    </div>
 
     <template v-if="busyLoadingProducts">
       <b-spinner class="m-5" />
@@ -11,34 +13,57 @@
       No products.
     </template>
     <template v-else>
-      <b-card-group deck>
+      <b-card-group
+        deck
+      >
         <b-card
           v-for="product in filteredProducts"
           :key="product.id"
-          :title="product.name"
-          class="product-list"
+          class="product-card"
         >
+          <!--          <template #header>-->
+          <!--            <h4 class="mb-0">Hello World</h4>-->
+          <!--          </template>-->
+          <!--          <div class="subscribed-badge">-->
+          <!--            <b-badge-->
+          <!--              v-if="product.isOwned"-->
+          <!--              variant="success"-->
+          <!--            >-->
+          <!--              Subscribed-->
+          <!--              <font-awesome-icon-->
+          <!--                icon="check"-->
+          <!--              />-->
+          <!--            </b-badge>-->
+          <!--          </div>-->
+          <b-card-title class="mt-3">
+            {{ product.name }}
+          </b-card-title>
           <!--          img-src="https://picsum.photos/300/300/?image=41"-->
           <!--          img-alt="Image"-->
           <!--          img-top-->
-          <b-card-text>
-            xxx
-          </b-card-text>
-          <small class="text-muted">{{ product.price }} FlexPoints</small>
+          <!--          <b-card-text>-->
+          <!--            xxx-->
+          <!--          </b-card-text>-->
           <template #footer>
+            <div class="text-right mb-3">
+              {{ product.price }} <small class="text-muted">FlexPoints</small>
+            </div>
             <div class="d-flex">
               <!--              <small class="text-muted">{{ product.price }} FlexPoints</small>-->
               <b-button
-                class=""
+                class="w-100"
                 :disabled="product.isOwned || busySubscribingProducts"
-                :variant="product.isOwned ? 'success' : productIdsToSubscribe.includes(product.id) ? 'warning' : ''"
-                @click="addOrRemoveFromToSubscribeList(product.id)"
+                :variant="product.isOwned ? 'success' : selectedProductsIds.includes(product.id) ? 'warning' : ''"
+                @click="toggleProductSelection(product.id)"
               >
                 <template v-if="product.isOwned">
-                  Subscribed!
+                  Subscribed
+                  <font-awesome-icon
+                    icon="check"
+                  />
                 </template>
-                <template v-else-if="productIdsToSubscribe.includes(product.id)">
-                  De-select
+                <template v-else-if="selectedProductsIds.includes(product.id)">
+                  Deselect
                 </template>
                 <template v-else>
                   Select
@@ -48,12 +73,12 @@
           </template>
         </b-card>
       </b-card-group>
-      <div class="w-100">
+      <div class="w-100 text-right">
         <b-button
           :disabled="subscribeSelectedButtonDisabled"
           :variant="subscribeSelectedButtonDisabled ? '' : 'success'"
           class="mt-5 ml-auto confirm-selection-button"
-          @click="productIdsToSubscribe.length && openConfirmSubscriptionModal()"
+          @click="selectedProductsIds.length && openConfirmSubscriptionModal()"
         >
           Subscribe selected benefits
         </b-button>
@@ -63,9 +88,6 @@
       <!---->
       <subscription-confirmation
         ref="subscription-confirmation"
-        :all-products="allProducts"
-        :selected-product-ids="productIdsToSubscribe"
-        @remove-product-id="addOrRemoveFromToSubscribeList"
       />
       <!---->
       <!---->
@@ -75,7 +97,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 import SubscriptionConfirmation from '@/components/SubscriptionConfirmation.vue';
 
@@ -86,39 +108,32 @@ export default {
   },
   // props: {},
   data() {
-    return {
-      productIdsToSubscribe: [],
-    };
+    return {};
   },
   computed: {
     ...mapGetters({
       busyLoadingProducts: 'products/busyLoadingProducts',
       busySubscribingProducts: 'products/busySubscribingProducts',
       allProducts: 'products/allProducts',
-      userProducts: 'auth/userProducts',
+      selectedProductsIds: 'products/selectedProductsIds',
+      userProductsIds: 'auth/userProductsIds',
     }),
     filteredProducts() {
       return this.allProducts.map((product) => ({
         ...product,
-        isOwned: this.userProducts.includes(product.id),
+        isOwned: this.userProductsIds.includes(product.id),
       }));
     },
     subscribeSelectedButtonDisabled() {
-      return !this.productIdsToSubscribe.length || this.busySubscribingProducts;
+      return !this.selectedProductsIds.length || this.busySubscribingProducts;
     },
   },
   created() {
   },
   methods: {
-    addOrRemoveFromToSubscribeList(productId) {
-      if (this.productIdsToSubscribe.includes(productId)) {
-        // Remove
-        this.productIdsToSubscribe = this.productIdsToSubscribe.filter((pId) => pId !== productId);
-      } else {
-        // Add
-        this.productIdsToSubscribe.push(productId);
-      }
-    },
+    ...mapActions({
+      toggleProductSelection: 'products/toggleProductSelection',
+    }),
     openConfirmSubscriptionModal() {
       const subscriptionConfirmation = this.$refs['subscription-confirmation'];
       if (subscriptionConfirmation && typeof subscriptionConfirmation.showModal === 'function') {
@@ -150,7 +165,7 @@ a {
 }
 
 .product-list-wrapper {
-  width: fit-content;
+  width: 100%;
   padding: 2rem;
   text-align: left;
   background-color: white;
@@ -158,5 +173,11 @@ a {
 
 .confirm-selection-button {
   min-width: 25%;
+}
+
+.subscribed-badge {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.3rem;
 }
 </style>
