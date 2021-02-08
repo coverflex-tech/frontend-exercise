@@ -20,10 +20,10 @@
     </template>
     <template v-else>
       <user-info
-        class="m-4"
+        class="mt-4"
       />
       <product-list
-        class="m-4"
+        class="mt-4"
       />
     </template>
   </div>
