@@ -1,0 +1,55 @@
+{
+  "home": {
+    "benefits": "Benefícios",
+    "hiThere": "Olá,",
+    "signInToSeeAndManageYourBenefits": "entra para veres e gerires os teus benefícios!",
+    "login": "entrar"
+  },
+  "navBar": {
+    "login": "entrar",
+    "logout": "sair"
+  },
+  "signInPopover": {
+    "signInAsEmployee": "Entrar como colaborador",
+    "enterUsername": "Nome de utilizador",
+    "login": "entrar",
+    "loggingIn": "a entrar"
+  },
+  "signInToast": {
+    "success": {
+      "title": "Olá {{user}}",
+      "message": "Bem-vindo de volta!"
+    },
+    "failure": {
+      "title": "Não conseguimos autenticar-te",
+      "message": "Por favor tenta mais tarde"
+    }
+  },
+  "userInfo": {
+    "welcome": "Bem-vindo, {{user}}",
+    "since": "Desde",
+    "availableFlexPoints": "{{points}} FlexPoints disponíveis",
+    "noBenefitsYet": "Ainda não tens benefícios.",
+    "yourBenefits": "Os teus benefícios"
+  },
+  "productList": {
+    "availableBenefits": "Benefícios Disponíveis",
+    "noBenefits": "Não há benefícios.",
+    "subscribed": "Subscrito",
+    "select": "Seleccionar",
+    "deselect": "Desseleccionar",
+    "subscribeSelected": "Subscrever os benefícios seleccionados"
+  },
+  "subscriptionConfirmation": {
+    "title": "Confirmar subscrições",
+    "columnProduct": "Benefício",
+    "columnFlexPoints": "FlexPoints",
+    "totalCost": "Custo Total",
+    "notEnoughBalance": "Não tens FlexPoints suficientes. Por favor revê as tuas opções.",
+    "bySubscribingToTheseProducts": "Ao subscrever estes benefícios utilizarás <b>{{ totalPrice }}</b> dos teus <b>{{ userBalance }}</b> FlexPoints.",
+    "currentFlexPoints": "FlexPoints actuais",
+    "remainingFlexPoints": "FlexPoints restantes",
+    "buttonCancel": "Cancelar",
+    "buttonOk": "Subscrever"
+  }
+}
