@@ -1,21 +1,32 @@
 <template>
   <div
     v-if="user"
-    class="product-list-wrapper"
+    class="user-info-wrapper"
   >
     <h4>
-      {{ user.user_id }}
+      Welcome, {{ user.user_id }}
     </h4>
-    <h6>
-      Since {{ user.inserted_at }}
-    </h6>
+    <small>
+      Since {{ user.inserted_at | moment('LL') }}
+    </small>
 
-    <h6>
-      Balance: {{ userBalance }} FlexPoints
-    </h6>
-    <h6>
-      Your products: {{ userProductsNames }}
-    </h6>
+    <div class="mt-1 mb-3">
+      {{ userBalance }} FlexPoints available
+    </div>
+    <template v-if="userProducts.length">
+      <div>
+        Your Benefits
+        <div
+          v-for="(product) in userProducts"
+          :key="`user-product-${product.id}`"
+        >
+          - {{ product.name }}
+        </div>
+      </div>
+    </template>
+    <template v-else>
+      You have no benefits yet.
+    </template>
   </div>
 </template>
 
@@ -32,14 +43,12 @@ export default {
   computed: {
     ...mapGetters({
       user: 'auth/user',
-      userProducts: 'auth/userProducts',
+      userProductsIds: 'auth/userProductsIds',
       userBalance: 'auth/userBalance',
       allProducts: 'products/allProducts',
     }),
-    userProductsNames() {
-      return this.allProducts
-        .filter((product) => this.userProducts.includes(product.id))
-        .map((product) => product.name);
+    userProducts() {
+      return this.allProducts.filter((product) => this.userProductsIds.includes(product.id));
     },
   },
   created() {
@@ -68,8 +77,8 @@ a {
   color: #42b983;
 }
 
-.product-list-wrapper {
-  width: fit-content;
+.user-info-wrapper {
+  width: 100%;
   padding: 2rem;
   text-align: left;
   background-color: white;
