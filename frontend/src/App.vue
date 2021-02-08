@@ -46,6 +46,12 @@ body {
   font-size: 14px;
   line-height: 20px;
   color: #333;
+
+  --default-color: #4e526b;
+  --accent-color: #fe685b; /* hsl(5, 99%, 68%) */
+  //--accent-color-hsl-c: 5, 99%; /* the base color */
+  //--accent-color-hsl-l: 68%; /* the initial lightness */
+  //--accent-color-darker: hsl(var(--accent-color-hsl-c), calc(var(--accent-color-hsl-l) - 5%));
 }
 
 #app {
@@ -55,12 +61,6 @@ body {
   text-align: center;
   color: var(--default-color);
   background: linear-gradient(180deg, #f5ebe3, #f5ebe3 16%, #eae0d9 28%, #e6e5e2);
-
-  --default-color: #4e526b;
-  --accent-color: #fe685b; /* hsl(5, 99%, 68%) */
-  //--accent-color-hsl-c: 5, 99%; /* the base color */
-  //--accent-color-hsl-l: 68%; /* the initial lightness */
-  //--accent-color-darker: hsl(var(--accent-color-hsl-c), calc(var(--accent-color-hsl-l) - 5%));
 }
 
 .bg-gradient-red {
@@ -75,5 +75,9 @@ body {
 
 .spinner-border {
   color: var(--accent-color);
+}
+
+.cursor-pointer {
+  cursor: pointer;
 }
 </style>
