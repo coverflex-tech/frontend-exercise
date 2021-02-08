@@ -61,7 +61,7 @@ const getters = {
   isAuthenticated: (state) => !!state.user,
   user: (state) => state.user,
   userId: (state) => state.user && state.user.user_id,
-  userProducts: (state) => state.user && state.user.data && state.user.data.product_ids,
+  userProductsIds: (state) => state.user && state.user.data && state.user.data.product_ids,
   userBalance: (state) => state.user && state.user.data && state.user.data.balance,
   // accessToken: (state) => state.accessToken, // needed for upload of impulzes
   isSigningOut: (state) => state.status === STATUS.SIGNING_OUT,
@@ -103,7 +103,7 @@ const actions = {
     const localStorageData = getLocalStorageData();
     if (localStorageData.userId) {
       Vue.prototype.$log.debug('User is signed in; refresh data');
-      await dispatch('signIn', localStorageData.user);
+      await dispatch('signIn', localStorageData.userId);
     } else {
       Vue.prototype.$log.debug('No user; sign out');
       const keepInSameRoute = true;
