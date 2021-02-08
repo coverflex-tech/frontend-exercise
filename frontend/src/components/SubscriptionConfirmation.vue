@@ -2,8 +2,8 @@
   <div>
     <b-modal
       ref="modal-confirmation"
+      :title="$t('subscriptionConfirmation.title')"
       scrollable
-      title="Confirm subscriptions"
     >
       <b-table-simple
         hover
@@ -14,10 +14,10 @@
         <b-thead>
           <b-tr>
             <b-th>
-              Product
+              {{ $t('subscriptionConfirmation.columnProduct') }}
             </b-th>
             <b-th class="text-right">
-              FlexPoints
+              {{ $t('subscriptionConfirmation.columnFlexPoints') }}
             </b-th>
             <b-th />
           </b-tr>
@@ -54,7 +54,7 @@
               class="text-right"
               variant="secondary"
             >
-              Total Cost
+              {{ $t('subscriptionConfirmation.totalCost') }}
             </b-td>
             <b-td
               class="text-right"
@@ -74,13 +74,16 @@
           variant="danger"
           show
         >
-          Not enough FlexPoints. Please review your choices.
+          {{ $t('subscriptionConfirmation.notEnoughBalance') }}
         </b-alert>
       </template>
       <template v-else>
-        <small class="text-muted">
-          By subscribing to these products you will use <b>{{ totalPrice }}</b> of your <b>{{ userBalance }}</b> FlexPoints.
-        </small>
+        <!-- eslint-disable vue/no-v-html -->
+        <small
+          class="text-muted"
+          v-html="$t('subscriptionConfirmation.bySubscribingToTheseProducts', {totalPrice, userBalance})"
+        />
+        <!-- eslint-enable vue/no-v-html -->
       </template>
 
       <b-table-simple class="no-borders">
@@ -88,7 +91,7 @@
           <b-tr>
             <b-td class="text-right">
               <small class="text-muted">
-                Current FlexPoints
+                {{ $t('subscriptionConfirmation.currentFlexPoints') }}
               </small>
             </b-td>
             <b-td
@@ -103,7 +106,7 @@
           <b-tr>
             <b-td class="text-right pt-0">
               <small class="text-muted">
-                Remaining FlexPoints
+                {{ $t('subscriptionConfirmation.remainingFlexPoints') }}
               </small>
             </b-td>
             <b-td
@@ -135,7 +138,7 @@
           size="sm"
           @click="cancel"
         >
-          Cancel
+          {{ $t('subscriptionConfirmation.buttonCancel') }}
         </b-button>
         <b-button
           :disabled="isSubscribeButtonDisabled"
@@ -143,7 +146,7 @@
           variant="success"
           @click="subscribe"
         >
-          Subscribe
+          {{ $t('subscriptionConfirmation.buttonOk') }}
         </b-button>
       </template>
     </b-modal>

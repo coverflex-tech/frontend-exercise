@@ -3,18 +3,18 @@
     <!--    <img alt="Vue logo" src="../assets/logo.png">-->
     <template v-if="!isAuthenticated">
       <b-jumbotron
-        header="Benefits"
-        lead="Hi there,"
+        :header="$t('home.benefits')"
+        :lead="$t('home.hiThere')"
       >
         <p>
-          sign in to see and manage your benefits!
+          {{ $t('home.signInToSeeAndManageYourBenefits') }}
         </p>
         <b-button
           v-if="!signInPopoverIsOpen"
           variant="primary"
           @click="updateSignInPopoverOpenStatus(true)"
         >
-          login
+          {{ $t('home.login') }}
         </b-button>
       </b-jumbotron>
     </template>

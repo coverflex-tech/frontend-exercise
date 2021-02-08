@@ -1,0 +1,55 @@
+{
+  "home": {
+    "benefits": "Benefits",
+    "hiThere": "Hi there,",
+    "signInToSeeAndManageYourBenefits": "sign in to see and manage your benefits!",
+    "login": "login"
+  },
+  "navBar": {
+    "login": "login",
+    "logout": "logout"
+  },
+  "signInPopover": {
+    "signInAsEmployee": "Sign in as employee",
+    "enterUsername": "Enter your username",
+    "login": "sign in",
+    "loggingIn": "signing in"
+  },
+  "signInToast": {
+    "success": {
+      "title": "Hi {{user}}",
+      "message": "Welcome back!"
+    },
+    "failure": {
+      "title": "Could not sign you in",
+      "message": "Please try again later"
+    }
+  },
+  "userInfo": {
+    "welcome": "Welcome, {{user}}",
+    "since": "Since",
+    "availableFlexPoints": "{{points}} FlexPoints available",
+    "noBenefitsYet": "You have no benefits yet.",
+    "yourBenefits": "Your Benefits"
+  },
+  "productList": {
+    "availableBenefits": "Available Benefits",
+    "noBenefits": "No benefits.",
+    "subscribed": "Subscribed",
+    "select": "Select",
+    "deselect": "Deselect",
+    "subscribeSelected": "Subscribe selected benefits"
+  },
+  "subscriptionConfirmation": {
+    "title": "Confirm subscriptions",
+    "columnProduct": "Benefício",
+    "columnFlexPoints": "FlexPoints",
+    "totalCost": "Total Cost",
+    "notEnoughBalance": "Not enough FlexPoints. Please review your choices.",
+    "bySubscribingToTheseProducts": "By subscribing to these benefits you will use <b>{{ totalPrice }}</b> of your <b>{{ userBalance }}</b> FlexPoints.",
+    "currentFlexPoints": "Current FlexPoints",
+    "remainingFlexPoints": "Remaining FlexPoints",
+    "buttonCancel": "Cancel",
+    "buttonOk": "Subscribe"
+  }
+}

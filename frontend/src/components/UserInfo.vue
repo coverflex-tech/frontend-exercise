@@ -4,18 +4,18 @@
     class="user-info-wrapper"
   >
     <h4>
-      Welcome, {{ user.user_id }}
+      {{ $t('userInfo.welcome', { user: user.user_id }) }}
     </h4>
     <small>
-      Since {{ user.inserted_at | moment('LL') }}
+      {{ $t('userInfo.since') }} {{ user.inserted_at | moment('LL') }}
     </small>
 
     <div class="mt-1 mb-3">
-      {{ userBalance }} FlexPoints available
+      {{ $t('userInfo.availableFlexPoints', { points: userBalance }) }}
     </div>
     <template v-if="userProducts.length">
       <div>
-        Your Benefits
+        {{ $t('userInfo.yourBenefits') }}
         <div
           v-for="(product) in userProducts"
           :key="`user-product-${product.id}`"
@@ -25,7 +25,7 @@
       </div>
     </template>
     <template v-else>
-      You have no benefits yet.
+      {{ $t('userInfo.noBenefitsYet') }}
     </template>
   </div>
 </template>

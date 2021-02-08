@@ -2,7 +2,7 @@
   <div class="product-list-wrapper">
     <div class="mb-4">
       <h5>
-        Available Benefits
+        {{ $t('productList.availableBenefits') }}
       </h5>
     </div>
 
@@ -10,7 +10,7 @@
       <b-spinner class="m-5" />
     </template>
     <template v-else-if="!allProducts.length">
-      No products.
+      {{ $t('productList.noBenefits') }}
     </template>
     <template v-else>
       <b-card-group
@@ -57,16 +57,16 @@
                 @click="toggleProductSelection(product.id)"
               >
                 <template v-if="product.isOwned">
-                  Subscribed
+                  {{ $t('productList.subscribed') }}
                   <font-awesome-icon
                     icon="check"
                   />
                 </template>
                 <template v-else-if="selectedProductsIds.includes(product.id)">
-                  Deselect
+                  {{ $t('productList.deselect') }}
                 </template>
                 <template v-else>
-                  Select
+                  {{ $t('productList.select') }}
                 </template>
               </b-button>
             </div>
@@ -80,7 +80,7 @@
           class="mt-5 ml-auto confirm-selection-button"
           @click="selectedProductsIds.length && openConfirmSubscriptionModal()"
         >
-          Subscribe selected benefits
+          {{ $t('productList.subscribeSelected') }}
         </b-button>
       </div>
       <!---->

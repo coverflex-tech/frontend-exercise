@@ -64,7 +64,8 @@ const getters = {
   userProductsIds: (state) => state.user && state.user.data && state.user.data.product_ids,
   userBalance: (state) => state.user && state.user.data && state.user.data.balance,
   // accessToken: (state) => state.accessToken, // needed for upload of impulzes
-  isSigningOut: (state) => state.status === STATUS.SIGNING_OUT,
+  busySigningIn: (state) => state.status === STATUS.SIGNING_IN,
+  busySigningOut: (state) => state.status === STATUS.SIGNING_OUT,
   signInPopoverIsOpen: (state) => state.signInPopoverIsOpen,
 };
 

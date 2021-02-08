@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 
 import auth from './modules/auth';
 import products from './modules/products';
+import translation from './modules/translation';
 
 Vue.use(Vuex);
 
@@ -15,5 +16,6 @@ export default new Vuex.Store({
   modules: {
     auth,
     products,
+    translation,
   },
 });

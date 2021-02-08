@@ -3,10 +3,13 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import BootstrapVue from 'bootstrap-vue';
 import VueLogger from 'vuejs-logger';
+import moment from 'moment';
 import VueMoment from 'vue-moment';
 
 import { library as faLibrary } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+import i18n from './i18n-setup';
 
 import App from './App.vue';
 import router from './router';
@@ -16,8 +19,6 @@ Vue.config.productionTip = false;
 
 Vue.use(VueAxios, axios);
 Vue.use(BootstrapVue);
-
-Vue.use(VueMoment);
 
 const isProduction = process.env.NODE_ENV === 'production';
 
@@ -31,7 +32,12 @@ Vue.use(VueLogger, {
   showConsoleColors: true,
 });
 
+Vue.use(VueMoment, {
+  moment, // needed to use the localization
+});
+
 // Initialize stores
+store.dispatch('translation/initialize');
 store.dispatch('auth/initialize');
 store.dispatch('products/initialize');
 
@@ -61,5 +67,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 new Vue({
   router,
   store,
+  i18n,
   render: (h) => h(App),
 }).$mount('#app');

@@ -20,13 +20,16 @@
     >
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
-        <b-navbar-nav class="d-flex align-items-center flex-row justify-content-center">
-          <b-nav-item active>
-            en
-          </b-nav-item>
-          /
-          <b-nav-item disabled>
-            pt
+        <b-navbar-nav class="flex-row justify-content-center">
+          <b-nav-item
+            v-for="supportedLocale in supportedLocales"
+            :key="supportedLocale.code"
+            :active="locale === supportedLocale.code"
+            class="lang-short d-flex align-items-center"
+            @click="changeLang(supportedLocale.code)"
+          >
+            <!--            :active="supportedLocale.code === locale.code"-->
+            {{ supportedLocale.short }}
           </b-nav-item>
         </b-navbar-nav>
 
@@ -41,7 +44,7 @@
           id="popover-button-sync"
           @click="clickSignInOrSignOut"
         >
-          {{ isAuthenticated ? 'logout' : 'login' }}
+          {{ isAuthenticated ? $t('navBar.logout') : $t('navBar.login') }}
         </b-nav-item>
         <sign-in-popover
           ref="signInPopover"
@@ -67,11 +70,14 @@ export default {
     ...mapGetters({
       isAuthenticated: 'auth/isAuthenticated',
       userId: 'auth/userId',
+      supportedLocales: 'translation/supportedLocales',
+      locale: 'translation/locale',
     }),
   },
   methods: {
     ...mapActions({
       signOut: 'auth/signOut',
+      changeLang: 'translation/changeLang',
     }),
     clickSignInOrSignOut() {
       if (this.isAuthenticated) {
@@ -99,5 +105,10 @@ export default {
 
 .nav-item {
   font-weight: bold;
+}
+
+.lang-short:not(:last-child)::after {
+  content: '/';
+  padding: 0 0.2rem;
 }
 </style>
