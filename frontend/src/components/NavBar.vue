@@ -30,12 +30,12 @@
           </b-nav-item>
         </b-navbar-nav>
 
-        <b-nav-text
-          v-if="isAuthenticated"
-          class="ml-3 mr-2"
-        >
-          Welcome, {{ userId }}!
-        </b-nav-text>
+        <!--        <b-nav-text-->
+        <!--          v-if="isAuthenticated"-->
+        <!--          class="ml-3 mr-2"-->
+        <!--        >-->
+        <!--          Welcome, {{ userId }}!-->
+        <!--        </b-nav-text>-->
 
         <b-nav-item
           id="popover-button-sync"
