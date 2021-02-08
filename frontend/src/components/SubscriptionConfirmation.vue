@@ -9,9 +9,8 @@
         hover
         small
         caption-top
-        responsive
       >
-        <caption>Confirm your subscription choices</caption>
+        <!--        <caption>Confirm your subscription choices</caption>-->
         <b-thead>
           <b-tr>
             <b-th>
@@ -25,7 +24,7 @@
         </b-thead>
         <b-tbody>
           <b-tr
-            v-for="productId in selectedProductIds"
+            v-for="productId in selectedProductsIds"
             :key="productId"
           >
             <b-td>
@@ -35,12 +34,14 @@
               {{ productFromId(productId).price }}
             </b-td>
             <b-td>
-              <b-button
-                :disabled="busySubscribingProducts"
-                @click="removeProductId(productId)"
+              <div
+                class="cursor-pointer pl-1 remove-item"
+                @click="!busySubscribingProducts && removeProductId(productId)"
               >
-                [remove]
-              </b-button>
+                <font-awesome-icon
+                  icon="trash"
+                />
+              </div>
             </b-td>
           </b-tr>
           <!---->
@@ -49,48 +50,81 @@
         </b-tbody>
         <b-tfoot>
           <b-tr>
-            <b-td class="text-right">
+            <b-td
+              class="text-right"
+              variant="secondary"
+            >
               Total Cost
             </b-td>
             <b-td
               class="text-right"
+              variant="secondary"
             >
               {{ totalPrice }}
             </b-td>
-            <b-td />
-          </b-tr>
-          <b-tr>
-            <b-td class="text-right">
-              Your current FlexPoints
-            </b-td>
             <b-td
-              class="text-right"
-            >
-              {{ userBalance }}
-            </b-td>
-            <b-td />
-          </b-tr>
-          <b-tr>
-            <b-td class="text-right">
-              Remaining FlexPoints
-            </b-td>
-            <b-td
-              class="text-right"
-            >
-              {{ userBalance - totalPrice }}
-            </b-td>
-            <b-td />
-          </b-tr>
-          <b-tr>
-            <b-td
-              colspan="3"
               variant="secondary"
-              class="text-right pt-3"
-            >
-              By subscribing to these products you will use <b>{{ totalPrice }}</b> of your <b>{{ userBalance }}</b> FlexPoints, with <b>{{ userBalance - totalPrice }}</b> FlexPoints left.
-            </b-td>
+            />
           </b-tr>
         </b-tfoot>
+      </b-table-simple>
+
+      <template v-if="balanceAfterSubscribing < 0">
+        <b-alert
+          variant="danger"
+          show
+        >
+          Not enough FlexPoints. Please review your choices.
+        </b-alert>
+      </template>
+      <template v-else>
+        <small class="text-muted">
+          By subscribing to these products you will use <b>{{ totalPrice }}</b> of your <b>{{ userBalance }}</b> FlexPoints.
+        </small>
+      </template>
+
+      <b-table-simple class="no-borders">
+        <b-tbody>
+          <b-tr>
+            <b-td class="text-right">
+              <small class="text-muted">
+                Current FlexPoints
+              </small>
+            </b-td>
+            <b-td
+              class="text-right"
+            >
+              <small class="text-muted">
+                {{ userBalance }}
+              </small>
+            </b-td>
+            <b-td />
+          </b-tr>
+          <b-tr>
+            <b-td class="text-right pt-0">
+              <small class="text-muted">
+                Remaining FlexPoints
+              </small>
+            </b-td>
+            <b-td
+              class="text-right pt-0"
+            >
+              <small
+                :class="balanceAfterSubscribing < 0 ? 'negative-value' : 'text-muted'"
+              >
+                {{ balanceAfterSubscribing }}
+              </small>
+            </b-td>
+            <b-td>
+              <template v-if="balanceAfterSubscribing < 0">
+                <font-awesome-icon
+                  icon="exclamation-triangle"
+                  class="exclamation-triangle"
+                />
+              </template>
+            </b-td>
+          </b-tr>
+        </b-tbody>
       </b-table-simple>
       <!---->
       <!---->
@@ -104,7 +138,7 @@
           Cancel
         </b-button>
         <b-button
-          :disabled="busySubscribingProducts"
+          :disabled="isSubscribeButtonDisabled"
           size="sm"
           variant="success"
           @click="subscribe"
@@ -121,30 +155,29 @@ import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'SubscriptionConfirmation',
-  props: {
-    allProducts: {
-      type: Array,
-      required: true,
-    },
-    selectedProductIds: {
-      type: Array,
-      required: true,
-    },
-  },
   computed: {
     ...mapGetters({
       userBalance: 'auth/userBalance',
       busySubscribingProducts: 'products/busySubscribingProducts',
+      allProducts: 'products/allProducts',
+      selectedProductsIds: 'products/selectedProductsIds',
     }),
     totalPrice() {
       return this.allProducts
-        .filter((product) => this.selectedProductIds.includes(product.id))
+        .filter((product) => this.selectedProductsIds.includes(product.id))
         .reduce((acc, val) => acc + val.price, 0);
+    },
+    balanceAfterSubscribing() {
+      return this.userBalance - this.totalPrice;
+    },
+    isSubscribeButtonDisabled() {
+      return this.busySubscribingProducts || this.balanceAfterSubscribing < 0;
     },
   },
   methods: {
     ...mapActions({
       subscribeProducts: 'products/subscribeProducts',
+      toggleProductSelection: 'products/toggleProductSelection',
     }),
     showModal() {
       const modal = this.$refs['modal-confirmation'];
@@ -159,21 +192,44 @@ export default {
       }
     },
     removeProductId(productId) {
-      this.$emit('remove-product-id', productId);
+      this.toggleProductSelection(productId);
       // Last one?
-      this.$nextTick(() => {
-        // $nextTick because we need to wait for it to reflect back on the passed prop
-        if (!this.selectedProductIds.length) {
-          this.closeModal();
-        }
-      });
+      if (!this.selectedProductsIds.length) {
+        this.closeModal();
+      }
     },
     productFromId(productId) {
       return this.allProducts.find((p) => p.id === productId);
     },
     async subscribe() {
-      await this.subscribeProducts(this.selectedProductIds);
+      await this.subscribeProducts(this.selectedProductsIds);
+      if (!this.selectedProductsIds.length) {
+        this.closeModal();
+      }
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.remove-item {
+  &:hover {
+    color: var(--accent-color);
+  }
+}
+
+.negative-value {
+  color: var(--accent-color);
+}
+
+.exclamation-triangle {
+  color: var(--accent-color);
+}
+
+.no-borders {
+  tbody, tr, td {
+    border: none;
+    padding: 0.2rem;
+  }
+}
+</style>
