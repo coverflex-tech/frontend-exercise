@@ -1,7 +1,6 @@
 <template>
   <b-popover
-    v-if="!isAuthenticated"
-    :show="signInPopoverIsOpen"
+    :show="!isAuthenticated && signInPopoverIsOpen"
     :title="$t('signInPopover.signInAsEmployee')"
     target="popover-button-sync"
     triggers="focus"
