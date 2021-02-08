@@ -12,6 +12,7 @@
         <b-button
           v-if="!signInPopoverIsOpen"
           variant="primary"
+          data-testid="button-sign-in"
           @click="updateSignInPopoverOpenStatus(true)"
         >
           {{ $t('home.login') }}

@@ -25,6 +25,7 @@
             v-for="supportedLocale in supportedLocales"
             :key="supportedLocale.code"
             :active="locale === supportedLocale.code"
+            :data-testid="`language-${supportedLocale.code}`"
             class="lang-short d-flex align-items-center"
             @click="changeLang(supportedLocale.code)"
           >
@@ -42,6 +43,7 @@
 
         <b-nav-item
           id="popover-button-sync"
+          data-testid="nav-bar-login-or-logout"
           @click="clickSignInOrSignOut"
         >
           {{ isAuthenticated ? $t('navBar.logout') : $t('navBar.login') }}

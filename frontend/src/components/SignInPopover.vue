@@ -14,11 +14,13 @@
         :placeholder="$t('signInPopover.enterUsername')"
         autofocus
         name="username"
+        data-testid="sign-in-popover-input-username"
         @keyup.enter="signInUsername && signIn(signInUsername)"
       />
       <div class="mt-2 ml-auto">
         <b-button
           :disabled="!signInUsername || busySigningIn"
+          data-testid="sign-in-popover-button"
           @click="signIn(signInUsername)"
         >
           <template v-if="busySigningIn">
