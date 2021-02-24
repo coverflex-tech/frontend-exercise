@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the Redirect route (without userId 1`] = `
+<redirect
+  pathname="/login"
+  referrer="test"
+/>
+`;
+
+exports[`renders the normal Route (with userId 1`] = `
+<route
+  path="/test"
+>
+  Test
+</route>
+`;
