@@ -43,6 +43,7 @@ Our Backend Developer has kindly provided you a simple Phoenix server for you to
 
 Let me guide you through how to set it up:
   * Install elixir: https://elixir-lang.org/install.html
+  * Install postgres: https://gist.github.com/ibraheem4/ce5ccd3e4d7a65589ce84f2a3b7c23a3
   * Install project dependencies with `mix deps.get`
   * Create and migrate your database with `mix ecto.setup`
   * Start Backend service endpoint with `mix phx.server`
