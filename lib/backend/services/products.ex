@@ -32,6 +32,11 @@ defmodule Backend.Services.Products do
         id: "equipment-insurance",
         name: "Personal Equipment Insurance",
         price: 60
+      },
+      %Product{
+        id: "expensive-product",
+        name: "Expensive Product",
+        price: 400
       }
     ]}
   end

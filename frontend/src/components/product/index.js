@@ -24,6 +24,10 @@ const Product = forwardRef(function Product(
 		productId
 	]);
 
+	if (!product) {
+		return null;
+	}
+
 	return (
 		<Card
 			className={classNames(styles.container, className)}
@@ -48,6 +52,10 @@ Product.propTypes = {
 	productId: PropTypes.string,
 	className: PropTypes.string,
 	onClick: PropTypes.func
+};
+
+Product.defaultProps = {
+	onClick() {}
 };
 
 export default Product;

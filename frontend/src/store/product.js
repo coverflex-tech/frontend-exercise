@@ -9,6 +9,14 @@ export const productsAtom = atom({
 		async ({ setSelf }) => {
 			const { products } = await getProducts();
 
+			if (process.env.NODE_ENV === 'development') {
+				products.push({
+					id: 'fake',
+					name: 'Fake Benefict',
+					price: 40
+				});
+			}
+
 			setSelf(products);
 		}
 	]

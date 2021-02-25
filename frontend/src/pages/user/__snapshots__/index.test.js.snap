@@ -1,3 +1,157 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the normal User Page 1`] = `user: test`;
+exports[`renders the normal User Page 1`] = `
+<main
+  class="MuiContainer-root MuiContainer-maxWidthLg"
+>
+  <button
+    class="MuiButtonBase-root MuiIconButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="MuiIconButton-label"
+    >
+      <div
+        class="MuiAvatar-root MuiAvatar-circle"
+      >
+        <img
+          class="MuiAvatar-img"
+          src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"
+        />
+      </div>
+    </span>
+    <span
+      class="MuiTouchRipple-root"
+    />
+  </button>
+  <h1
+    class="MuiTypography-root MuiTypography-h5"
+  >
+    test
+  </h1>
+  <p
+    class="MuiTypography-root MuiTypography-body1"
+  >
+    balance: 
+    60
+  </p>
+  <div
+    class="products"
+  >
+    <h2
+      class="MuiTypography-root MuiTypography-h6"
+    >
+      Subscribed Products
+    </h2>
+    <div
+      class="container"
+    >
+      <div
+        class="MuiPaper-root MuiCard-root container MuiPaper-elevation1 MuiPaper-rounded"
+        tabindex="1"
+      >
+        <button
+          class="MuiButtonBase-root MuiCardActionArea-root action"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-content"
+            />
+          </div>
+          <div
+            class="MuiCardMedia-root media"
+            style="background-image: url(/icons/productId1.svg);"
+          />
+          <span
+            class="MuiCardActionArea-focusHighlight"
+          />
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+      <div
+        class="MuiPaper-root MuiCard-root container MuiPaper-elevation1 MuiPaper-rounded"
+        tabindex="1"
+      >
+        <button
+          class="MuiButtonBase-root MuiCardActionArea-root action"
+          tabindex="0"
+          type="button"
+        >
+          <div
+            class="MuiCardHeader-root"
+          >
+            <div
+              class="MuiCardHeader-content"
+            />
+          </div>
+          <div
+            class="MuiCardMedia-root media"
+            style="background-image: url(/icons/productId2.svg);"
+          />
+          <span
+            class="MuiCardActionArea-focusHighlight"
+          />
+          <span
+            class="MuiTouchRipple-root"
+          />
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`renders the normal User Page without products subscripton 1`] = `
+<main
+  class="MuiContainer-root MuiContainer-maxWidthLg"
+>
+  <button
+    class="MuiButtonBase-root MuiIconButton-root"
+    tabindex="0"
+    type="button"
+  >
+    <span
+      class="MuiIconButton-label"
+    >
+      <div
+        class="MuiAvatar-root MuiAvatar-circle"
+      >
+        <img
+          class="MuiAvatar-img"
+          src="https://www.gravatar.com/avatar/1aedb8d9dc4751e229a335e371db8058"
+        />
+      </div>
+    </span>
+    <span
+      class="MuiTouchRipple-root"
+    />
+  </button>
+  <h1
+    class="MuiTypography-root MuiTypography-h5"
+  >
+    test
+  </h1>
+  <p
+    class="MuiTypography-root MuiTypography-body1"
+  >
+    balance: 
+    500
+  </p>
+  <div
+    class="products"
+  >
+    <h2
+      class="MuiTypography-root MuiTypography-h6"
+    >
+      No Products subscribed
+    </h2>
+  </div>
+</main>
+`;
