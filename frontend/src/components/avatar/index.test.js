@@ -1,17 +1,17 @@
 import { render } from '@testing-library/react';
 import { useRecoilValue } from 'recoil';
 
-import User from './index';
+import UserAvatar from './index';
 
 jest.mock('recoil', () => ({
 	...jest.requireActual('recoil'),
 	useRecoilValue: jest.fn()
 }));
 
-test('renders the normal User', () => {
+test('renders the normal UserAvatar', () => {
   useRecoilValue.mockReturnValue('test');
 
-  const { container } = render(<User />);
+  const { container } = render(<UserAvatar />);
 
   expect(container.firstChild).toMatchSnapshot();
 });

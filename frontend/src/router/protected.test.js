@@ -7,10 +7,10 @@ import ProtectedRoute from './protected';
 jest.mock('react-router-dom', () => ({
 	useLocation: jest.fn(),
 	Redirect({ to: { pathname, state: { referrer }}}) {
-		return <redirect {...{ pathname, referrer }} />
+		return <redirect {...{ pathname, referrer }} />;
 	},
 	Route(props) {
-		return <route {...props} />
+		return <route {...props} />;
 	}
 }));
 
@@ -20,20 +20,20 @@ jest.mock('recoil', () => ({
 }));
 
 test('renders the Redirect route (without userId', () => {
-	useLocation.mockImplementation(() => ({
+	useLocation.mockReturnValue({
 		pathname: 'test'
-	}))
+	});
 
 	const { container } = render(<ProtectedRoute />);
 
-  expect(container.firstChild).toMatchSnapshot()
+  expect(container.firstChild).toMatchSnapshot();
 });
 
 test('renders the normal Route (with userId', () => {
-	useRecoilValue.mockImplementation(() => 'userId');
-	useLocation.mockImplementation(() => ({}))
+	useRecoilValue.mockReturnValue('userId');
+	useLocation.mockReturnValue({});
 
 	const { container } = render(<ProtectedRoute path='/test'>Test</ProtectedRoute>);
 
-  expect(container.firstChild).toMatchSnapshot()
+  expect(container.firstChild).toMatchSnapshot();
 });
