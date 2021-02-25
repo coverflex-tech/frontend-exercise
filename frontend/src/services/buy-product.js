@@ -1,5 +1,5 @@
 export default async function buyProduct({ productId, userId }) {
-	const data = await fetch(`http://localhost:4000/api/orders`, {
+	const data = await fetch('http://localhost:4000/api/orders', {
 		method: 'POST',
 		headers: {
 			Accept: 'application/json',

@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the normal ProductsList block 1`] = `
+<div
+  class="container"
+>
+  <button
+    productid="productId1"
+  />
+  <button
+    productid="productId2"
+  />
+</div>
+`;
