@@ -20,7 +20,7 @@ export const userState = selector({
 	get({ get }) {
 		return get(userAtom);
 	},
-	set({set}, user) {
+	set({ set }, user) {
 		set(userAtom, user.user_id);
 		set(userBalanceAtom, user.data.balance);
 		set(userProductsAtom, user.data.product_ids);

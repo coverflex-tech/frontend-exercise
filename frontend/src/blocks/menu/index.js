@@ -16,21 +16,32 @@ export default function MenuApp() {
 	const userId = useRecoilValue(userAtom);
 	const history = useHistory();
 
-	const goToProductsPage = useCallback(
-		() => history.push('/products'),
-		[history]
-	);
+	const goToProductsPage = useCallback(() => history.push('/products'), [
+		history
+	]);
 
-	const goToUserPage = useCallback(
-		() => history.push(`/user/${userId}`),
-		[history, userId]
-	);
+	const goToUserPage = useCallback(() => history.push(`/user/${userId}`), [
+		history,
+		userId
+	]);
 
-	return <AppBar position='static'>
-		<Toolbar>
-			<Typography variant='h6' className={styles.title}>Cloverflex</Typography>
-			{userId && <Button color='inherit' onClick={goToProductsPage}>Products</Button>}
-			{userId ? <UserAvatar onClick={goToUserPage} /> : <Button color='inherit'>Login</Button>}
-		</Toolbar>
-	</AppBar>
+	return (
+		<AppBar position='static'>
+			<Toolbar>
+				<Typography variant='h6' className={styles.title}>
+					Cloverflex
+				</Typography>
+				{userId ? (
+					<>
+						<Button color='inherit' onClick={goToProductsPage}>
+							Products
+						</Button>
+						<UserAvatar onClick={goToUserPage} />
+					</>
+				) : (
+					<Button color='inherit'>Login</Button>
+				)}
+			</Toolbar>
+		</AppBar>
+	);
 }

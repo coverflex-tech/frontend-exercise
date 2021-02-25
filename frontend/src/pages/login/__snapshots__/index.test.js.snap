@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the normal Login 1`] = `
+exports[`renders the normal Login Page 1`] = `
 <main
   class="MuiContainer-root MuiContainer-maxWidthXs"
 >

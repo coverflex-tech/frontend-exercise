@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the normal UserAvatar 1`] = `
+exports[`renders the normal UserAvatar component 1`] = `
 <button
   class="MuiButtonBase-root MuiIconButton-root"
   tabindex="0"

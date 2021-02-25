@@ -8,10 +8,10 @@ jest.mock('recoil', () => ({
 	useRecoilValue: jest.fn()
 }));
 
-test('renders the normal UserAvatar', () => {
-  useRecoilValue.mockReturnValue('test');
+test('renders the normal UserAvatar component', () => {
+	useRecoilValue.mockReturnValue('test');
 
-  const { container } = render(<UserAvatar />);
+	const { container } = render(<UserAvatar />);
 
-  expect(container.firstChild).toMatchSnapshot();
+	expect(container.firstChild).toMatchSnapshot();
 });

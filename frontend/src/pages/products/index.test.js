@@ -1,9 +1,25 @@
 import { render } from '@testing-library/react';
+import { useRecoilValue } from 'recoil';
 
 import Products from './index';
 
-test('renders the normal Products', () => {
-  const { container } = render(<Products />);
+jest.mock('recoil', () => ({
+	...jest.requireActual('recoil'),
+	useRecoilValue: jest.fn()
+}));
 
-  expect(container.firstChild).toMatchSnapshot()
+test('renders Products Page', () => {
+	useRecoilValue.mockReturnValue(['productId1', 'productId2']);
+
+	const { container } = render(<Products />);
+
+	expect(container.firstChild).toMatchSnapshot();
+});
+
+test('renders Products Page with empty list', () => {
+	useRecoilValue.mockReturnValue([]);
+
+	const { container } = render(<Products />);
+
+	expect(container.firstChild).toMatchSnapshot();
 });

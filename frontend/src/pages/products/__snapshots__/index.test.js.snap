@@ -1,3 +1,88 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the normal Products 1`] = `Products`;
+exports[`renders Products Page 1`] = `
+<main
+  class="MuiContainer-root MuiContainer-maxWidthLg"
+>
+  <h1
+    class="MuiTypography-root MuiTypography-h5"
+  >
+    Products
+  </h1>
+  <div
+    class="container"
+  >
+    <div
+      class="MuiPaper-root MuiCard-root container MuiPaper-elevation1 MuiPaper-rounded"
+      tabindex="1"
+    >
+      <button
+        class="MuiButtonBase-root MuiCardActionArea-root action"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="MuiCardHeader-root"
+        >
+          <div
+            class="MuiCardHeader-content"
+          />
+        </div>
+        <div
+          class="MuiCardMedia-root media"
+          style="background-image: url(/icons/productId1.svg);"
+        />
+        <span
+          class="MuiCardActionArea-focusHighlight"
+        />
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+    <div
+      class="MuiPaper-root MuiCard-root container MuiPaper-elevation1 MuiPaper-rounded"
+      tabindex="1"
+    >
+      <button
+        class="MuiButtonBase-root MuiCardActionArea-root action"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="MuiCardHeader-root"
+        >
+          <div
+            class="MuiCardHeader-content"
+          />
+        </div>
+        <div
+          class="MuiCardMedia-root media"
+          style="background-image: url(/icons/productId2.svg);"
+        />
+        <span
+          class="MuiCardActionArea-focusHighlight"
+        />
+        <span
+          class="MuiTouchRipple-root"
+        />
+      </button>
+    </div>
+  </div>
+</main>
+`;
+
+exports[`renders Products Page with empty list 1`] = `
+<main
+  class="MuiContainer-root MuiContainer-maxWidthLg"
+>
+  <h1
+    class="MuiTypography-root MuiTypography-h5"
+  >
+    Products
+  </h1>
+  <div
+    class="container"
+  />
+</main>
+`;

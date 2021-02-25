@@ -1,9 +1,5 @@
 import { useRecoilValue } from 'recoil';
-import {
-  useLocation,
-	Redirect,
-  Route
-} from 'react-router-dom';
+import { useLocation, Redirect, Route } from 'react-router-dom';
 
 import { userAtom } from '../store/user';
 
@@ -12,12 +8,14 @@ export default function ProtectedRoute(props) {
 	const userId = useRecoilValue(userAtom);
 
 	if (!userId) {
-		return <Redirect
-			to={{
-				pathname: "/login",
-				state: { referrer: pathname }
-			}}
-		/>
+		return (
+			<Redirect
+				to={{
+					pathname: '/login',
+					state: { referrer: pathname }
+				}}
+			/>
+		);
 	}
 
 	return <Route {...props} />;

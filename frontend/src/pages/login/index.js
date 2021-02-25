@@ -20,7 +20,7 @@ const redirect = (referrer, userId) => {
 	}
 
 	return referrer;
-}
+};
 
 export default function Login() {
 	const setUser = useSetRecoilState(userState);
@@ -40,38 +40,40 @@ export default function Login() {
 		}
 	}, [history, setUser, state?.referrer]);
 
-	return <Container component='main' maxWidth='xs'>
-		<div className={styles.container}>
-			<Avatar>
-				<LockOutlinedIcon />
-			</Avatar>
-			<Typography component='h1' variant='h5'>
-				Sign in
-			</Typography>
-			<TextField
-				inputRef={textRef}
-				variant='outlined'
-				margin='normal'
-				required
-				fullWidth
-				id='username'
-				inputProps={{
-					'data-testid': 'username'
-				}}
-				label='User Name'
-				name='username'
-				autoComplete='username'
-				autoFocus
-			/>
-			<Button
-				type='submit'
-				fullWidth
-				variant='contained'
-				color='primary'
-				onClick={handleSubmit}
-			>
-				Sign In
-			</Button>
-		</div>
-	</Container>;
+	return (
+		<Container component='main' maxWidth='xs'>
+			<div className={styles.container}>
+				<Avatar>
+					<LockOutlinedIcon />
+				</Avatar>
+				<Typography component='h1' variant='h5'>
+					Sign in
+				</Typography>
+				<TextField
+					inputRef={textRef}
+					variant='outlined'
+					margin='normal'
+					required
+					fullWidth
+					id='username'
+					inputProps={{
+						'data-testid': 'username'
+					}}
+					label='User Name'
+					name='username'
+					autoComplete='username'
+					autoFocus
+				/>
+				<Button
+					type='submit'
+					fullWidth
+					variant='contained'
+					color='primary'
+					onClick={handleSubmit}
+				>
+					Sign In
+				</Button>
+			</div>
+		</Container>
+	);
 }
