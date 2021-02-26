@@ -6,7 +6,8 @@ import Container from '@material-ui/core/Container';
 
 import ProductsList from '../../blocks/products-list';
 import ProductModal from '../../blocks/product-modal';
-import { userInfoState } from '../../store/user';
+import buyProduct from '../../services/buy-product';
+import { userAtom, userInfoState } from '../../store/user';
 import { productsList } from '../../store/product';
 import Toast from '../../components/toast';
 
@@ -15,6 +16,7 @@ export default function Products() {
 	const [toastInfo, setToastInfo] = useState();
 	const updateUserInfo = useSetRecoilState(userInfoState);
 	const products = useRecoilValue(productsList);
+	const userId = useRecoilValue(userAtom);
 
 	const handleClick = useCallback(
 		(productId) => setSelectedProduct(productId),
@@ -22,16 +24,23 @@ export default function Products() {
 	);
 
 	const handleClose = useCallback(
-		({ order, error }) => {
-			setToastInfo(error || order);
+		async (productId) => {
+			if (productId) {
+				const { error, order } = await buyProduct({
+					productId,
+					userId
+				});
 
-			if (order) {
-				updateUserInfo(order.data.items);
+				setToastInfo(error || order);
+
+				if (order) {
+					updateUserInfo(order.data.items);
+				}
 			}
 
 			setSelectedProduct();
 		},
-		[updateUserInfo]
+		[updateUserInfo, userId]
 	);
 
 	const handleCloseToast = useCallback(() => setToastInfo(), []);
