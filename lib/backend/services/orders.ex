@@ -20,7 +20,7 @@ defmodule Backend.Services.Orders do
           {:error, :products_already_purchased}
 
         updated_balance < 0 ->
-          {:error, :insuficient_balance}
+          {:error, :insufficient_balance}
 
         true ->
           order_params = %{user_id: user_id, total: total, items: order_products}

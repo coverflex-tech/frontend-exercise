@@ -1,0 +1,19 @@
+.container {
+	min-width: 20rem;
+	margin: 1rem;
+}
+
+.action {
+	height: 100%;
+	width: 100%;
+}
+
+.media {
+	padding-top: 56.25%;
+	height: 0px;
+}
+
+:global(.MuiCardMedia-root) {
+	background-size: contain !important;
+	margin-bottom: 1rem;
+}
