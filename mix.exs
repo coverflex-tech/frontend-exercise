@@ -33,8 +33,8 @@ defmodule Backend.MixProject do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.4.11"},
-      {:phoenix_pubsub, "~> 1.1"},
+      {:phoenix, "~> 1.5.9"},
+      {:phoenix_pubsub, "~> 2.0"},
       {:phoenix_ecto, "~> 4.0"},
       {:ecto_sql, "~> 3.1"},
       {:postgrex, ">= 0.0.0"},
@@ -45,7 +45,7 @@ defmodule Backend.MixProject do
       {:decimal, "~> 1.0"},
       {:timex, "~> 3.0"},
       {:tesla, "~> 1.3.0"},
-      {:cors_plug, "~> 2.0"},
+      {:cors_plug, "~> 2.0"}
     ]
   end
 

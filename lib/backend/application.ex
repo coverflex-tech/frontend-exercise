@@ -1,4 +1,5 @@
 defmodule Backend.Application do
+  {Phoenix.PubSub, [name: Backend.PubSub, adapter: Phoenix.PubSub.PG2]}
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
