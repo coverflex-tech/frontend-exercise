@@ -16,7 +16,10 @@ export const useSessionState = () => {
 
       try {
         if (user) {
-          dispatch({ type: "login_success", payload: JSON.parse(user) });
+          dispatch({
+            type: "login_success",
+            payload: { user: JSON.parse(user) },
+          });
         }
       } catch (error) {
         console.error("failed to read user from session storage");

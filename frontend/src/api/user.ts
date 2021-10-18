@@ -10,4 +10,4 @@ export type UserResponse = {
 };
 
 export const authenticateUser = (username: string): Promise<UserResponse> =>
-  get(`/users/${username}`);
+  get(`users/${username}`);

@@ -9,11 +9,17 @@ type ErrorPayload = {
   error: string | null;
 };
 
+type OrderPayload = {
+  value: number;
+  items: string[];
+};
+
 export type Action =
   | { type: "login_start" }
   | { type: "logout" }
   | { type: "login_success"; payload: Payload }
-  | { type: "login_failed"; payload: ErrorPayload };
+  | { type: "login_failed"; payload: ErrorPayload }
+  | { type: "order_completed"; payload: OrderPayload };
 
 export type Dispatch = (action: Action) => void;
 type State = {
@@ -55,6 +61,30 @@ const UserReducer: React.Reducer<State, Action> = (
     case "logout": {
       return { ...state, auth: false, user: null };
     }
+    case "order_completed": {
+      const newBalance = state.user!.data.balance - action.payload.value;
+      const newItemList = [
+        ...new Set([...state.user!.data.product_ids, ...action.payload.items]),
+      ];
+      console.log("order_completed", {
+        newBalance,
+        newItemList,
+        balance: state.user?.data.balance,
+        items: state.user?.data.product_ids,
+      });
+
+      return {
+        ...state,
+        user: {
+          ...state.user!,
+          data: {
+            ...state.user!.data,
+            balance: newBalance,
+            product_ids: newItemList,
+          },
+        },
+      };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action}`);
     }
@@ -88,27 +118,27 @@ function useAuth() {
 async function login(
   dispatch: Dispatch,
   username: string,
-  callback: () => void
+  callback?: () => void
 ) {
   dispatch({ type: "login_start" });
 
   authenticateUser(username)
     .then(({ user }: UserResponse) => {
-      if (!user) throw new Error("user data not found");
       dispatch({ type: "login_success", payload: { user } });
       sessionStorage.setItem("user", JSON.stringify(user));
-      callback();
+      if (callback) callback();
     })
     .catch((reason) => {
       dispatch({
         type: "login_failed",
-        payload: { error: JSON.stringify(reason) },
+        payload: { error: reason.message },
       });
     });
 }
 
 function logout(dispatch: Dispatch, callback: () => void) {
   dispatch({ type: "logout" });
+  sessionStorage.removeItem("user");
   callback();
 }
 
