@@ -1,10 +1,11 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Center, Flex, Heading, Text, Wrap } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Text, Wrap } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getProducts, Product } from "../api/products";
 import { BenefitCard } from "../components/BenefitCard";
 import { BenefitCardsSkeleton } from "../components/BenefitCardsSkeleton";
+import { BenefitsContainer } from "../components/BenefitsContainer";
 import { Header } from "../components/Header";
 import { purchase } from "../state/orderActions";
 import { useAppState } from "../state/StateContext";
@@ -76,13 +77,7 @@ export const Benefits = () => {
         alignItems="center"
       >
         <Header logout={headerlogOut} user={user} />
-        <Center
-          flexDirection="column"
-          bg={"AppWorkspace"}
-          borderRadius="md"
-          shadow="base"
-          p={5}
-        >
+        <BenefitsContainer>
           <Heading as="h3" size="lg" mb="2">
             Choose a selection of benefits
           </Heading>
@@ -124,15 +119,8 @@ export const Benefits = () => {
             </>
           )}
           {orderError && <Text color="red.500">{orderError}</Text>}
-        </Center>
-        <Center
-          flexDirection="column"
-          bg={"AppWorkspace"}
-          borderRadius="md"
-          shadow="base"
-          p={5}
-          mt="6"
-        >
+        </BenefitsContainer>
+        <BenefitsContainer mt="6">
           <Heading as="h3" size="lg" mb="2">
             Benefits you've already claimed
           </Heading>
@@ -150,7 +138,8 @@ export const Benefits = () => {
           {loadingProducts === "error" && (
             <Text color="red.500">Something went wrong, try again</Text>
           )}
-        </Center>
+          {claimedItems.length === 0 && <Text>No benefits claimed yet</Text>}
+        </BenefitsContainer>
       </Box>
     </Flex>
   );

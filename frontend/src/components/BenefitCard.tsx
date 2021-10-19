@@ -10,6 +10,14 @@ type BenefitCardProps = {
   backgroundColor?: BackgroundProps["bg"];
 };
 
+export const cardStyleProps = {
+  p: "4",
+  w: ["100%", "140px", "200px"],
+  h: ["140px", "140px", "200px"],
+  boxShadow: "base",
+  borderRadius: "md",
+};
+
 export const BenefitCard = ({
   selected,
   item,
@@ -43,12 +51,8 @@ export const BenefitCard = ({
 
   return (
     <WrapItem
-      p="4"
-      w={["100%", "140px", "200px"]}
-      h={["140px", "140px", "200px"]}
+      {...cardStyleProps}
       bg={backgroundColor}
-      boxShadow="base"
-      borderRadius="md"
       {...borderProps}
       onClick={onClick}
       _hover={hoverProps}
