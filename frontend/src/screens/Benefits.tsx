@@ -1,32 +1,31 @@
-import {
-  Box,
-  Center,
-  Flex,
-  Spacer,
-  Text,
-  Wrap,
-  WrapItem,
-  Button,
-} from "@chakra-ui/react";
+import { Button } from "@chakra-ui/button";
+import { Box, Center, Flex, Heading, Text, Wrap } from "@chakra-ui/layout";
 import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { createOrder, getProducts, Product } from "../api/products";
+import { getProducts, Product } from "../api/products";
+import { BenefitCard } from "../components/BenefitCard";
 import { Header } from "../components/Header";
-import { login, logout, useAuth } from "../state/UserContext";
+import { purchase } from "../state/orderActions";
+import { useAppState } from "../state/StateContext";
+import { getUser, logout } from "../state/userActions";
 
 export const Benefits = () => {
   const {
     dispatch,
-    state: { user },
-  } = useAuth();
+    state: { user, orderError, loadingOrder },
+  } = useAppState();
   const userId = user!.user_id;
   const history = useHistory();
   const [products, setProducts] = useState<Product[]>([]);
   const headerlogOut = () => logout(dispatch, () => history.push("/login"));
   const [selectedItems, setSelectedItems] = useState<Product[]>([]);
+  const userItems = user!.data.product_ids;
+  const claimedItems = products.filter((product) =>
+    userItems.includes(product.id)
+  );
 
   const filteredProducts = products.filter(
-    (product) => !user!.data.product_ids.includes(product.id)
+    (product) => !userItems.includes(product.id)
   );
 
   const sumPriceSelectedItems = selectedItems.reduce((prev, current) => {
@@ -34,35 +33,28 @@ export const Benefits = () => {
   }, 0);
 
   useEffect(() => {
-    login(dispatch, userId);
-    getProducts()
-      .then((products) => setProducts(products.products))
-      .catch((e) => console.log(e));
-  }, [userId, dispatch]);
-  const [orderError, setOrderError] = useState();
+    const getData = async () => {
+      // to avoid out of date order items and balance from session
+      await getUser(dispatch, userId);
+      await getProducts()
+        .then(({ products }) => setProducts(products))
+        .catch((e) => console.log(e));
+    };
+    getData();
+  }, [dispatch, userId]);
 
-  const purchase = () => {
-    createOrder({
-      order: {
-        items: selectedItems.map((item) => item.id),
-        user_id: user!.user_id,
-      },
-    })
-      .then((resp) => {
-        // resp.order.data.items
-        // resp.order.data.total
-        dispatch({
-          type: "order_completed",
-          payload: {
-            items: resp.order.data.items,
-            value: resp.order.data.total,
-          },
-        });
-      })
-      .catch((e) => {
-        if (e.error) setOrderError(e);
-      });
+  const makePurchase = () => {
+    purchase(dispatch, selectedItems, user!);
+    setSelectedItems([]);
   };
+
+  const selectItem = (item: Product) =>
+    setSelectedItems([...selectedItems, item]);
+
+  const unSelectItem = (item: Product) =>
+    setSelectedItems(
+      selectedItems.filter((selected) => item.id !== selected.id)
+    );
 
   return (
     <Flex h="100%" justifyContent="center">
@@ -78,59 +70,64 @@ export const Benefits = () => {
           flexDirection="column"
           bg={"AppWorkspace"}
           borderRadius="md"
+          shadow="base"
           p={5}
         >
+          <Heading as="h3" size="lg" mb="2">
+            Choose a selection of benefits
+          </Heading>
           <Wrap spacing={3} justify="center">
-            {filteredProducts.map((item, i) => {
-              const { id, name, price } = item;
-              const borderProps = selectedItems.includes(item)
-                ? {
-                    border: "2px",
-                    borderColor: "green.400",
-                  }
-                : {};
-              return (
-                <WrapItem
-                  p="4"
-                  w={["100%", "140px", "200px"]}
-                  h={["140px", "140px", "200px"]}
-                  boxShadow="base"
-                  borderRadius="md"
-                  key={id}
-                  {...borderProps}
-                  onClick={() => {
-                    if (selectedItems.includes(item)) {
-                      setSelectedItems(
-                        selectedItems.filter(
-                          (selected) => item.id !== selected.id
-                        )
-                      );
-                    } else {
-                      setSelectedItems([...selectedItems, item]);
-                    }
-                  }}
-                  _hover={{
-                    boxShadow: "md",
-                    cursor: "pointer",
-                  }}
-                >
-                  <Flex flexDirection="column" boxSize="100%">
-                    <Text unselectable="on">{name}</Text>
-                    <Spacer />
-                    <Text alignSelf="flex-end">{price} FP</Text>
-                  </Flex>
-                </WrapItem>
-              );
-            })}
+            {filteredProducts.length === 0 && (
+              <Text> You've claimed everything!</Text>
+            )}
+            {filteredProducts.map((item) => (
+              <BenefitCard
+                key={item.id}
+                item={item}
+                selected={selectedItems.includes(item)}
+                selectItem={selectItem}
+                unSelectItem={unSelectItem}
+              />
+            ))}
           </Wrap>
-          <Text mt={2}>Selected Value {sumPriceSelectedItems}FP</Text>
-          <Text>balance: {user?.data.balance}FP</Text>
-          <Text>
-            Remaining balance after purchase:
-            {(user?.data.balance ?? 0) - sumPriceSelectedItems}FP
-          </Text>
-          <Button onClick={purchase}>Purchase selected items</Button>
-          <Text>{JSON.stringify(orderError)}</Text>
+          {selectedItems.length > 0 && (
+            <>
+              <Text mt={2}>Selected Value {sumPriceSelectedItems}FP</Text>
+              <Text>
+                Remaining balance after purchase:
+                {(user?.data.balance ?? 0) - sumPriceSelectedItems}FP
+              </Text>
+              <Button onClick={makePurchase} isLoading={loadingOrder}>
+                Purchase selected items
+              </Button>
+            </>
+          )}
+          {selectedItems.length === 0 && filteredProducts.length > 0 && (
+            <Text mt={2}>Nothing selected!</Text>
+          )}
+          {orderError && <Text color="red.500">{orderError}</Text>}
+        </Center>
+        <Center
+          flexDirection="column"
+          bg={"AppWorkspace"}
+          borderRadius="md"
+          shadow="base"
+          p={5}
+          mt="4"
+        >
+          <Heading as="h3" size="lg" mb="2">
+            Benefits you've already claimed
+          </Heading>
+          <Wrap spacing={3} justify="center">
+            {claimedItems.map((item) => (
+              <BenefitCard
+                key={item.id}
+                item={item}
+                selected={false}
+                backgroundColor="gray.100"
+              />
+            ))}
+          </Wrap>
         </Center>
       </Box>
     </Flex>

@@ -4,13 +4,15 @@ import { Input } from "@chakra-ui/input";
 import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/layout";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Redirect } from "react-router";
-import { login, useAuth } from "../state/UserContext";
+import { useAppState } from "../state/StateContext";
+import { getUser as login } from "../state/userActions";
 
 export const Login = () => {
   const {
     dispatch,
-    state: { auth, error, loading },
-  } = useAuth();
+    state: { auth, authError, loadingAuth },
+  } = useAppState();
+
   const [userName, setUserName] = useState("");
 
   if (auth) return <Redirect to="/" />;
@@ -46,7 +48,7 @@ export const Login = () => {
               onChange={handleChange}
             />
 
-            {!!error && (
+            {!!authError && (
               <Text mt="2" mb="2" color="red.500">
                 Something went wrong, please try again
               </Text>
@@ -54,7 +56,7 @@ export const Login = () => {
           </FormControl>
           <Flex>
             <Spacer />
-            <Button colorScheme="teal" type="submit" isLoading={loading}>
+            <Button colorScheme="teal" type="submit" isLoading={loadingAuth}>
               Login
             </Button>
           </Flex>

@@ -7,8 +7,14 @@ export const getProducts = (): Promise<ProductResponse> => {
   return get<ProductResponse>(`products`);
 };
 
+type Order = {
+  id: string;
+  name: string;
+  price: number;
+};
+
 export type OrderResponse = {
-  order: { order_id: string; data: { items: string[]; total: number } };
+  order: { order_id: string; data: { items: Order[]; total: number } };
 };
 
 export type OrderBody = {

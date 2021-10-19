@@ -1,10 +1,10 @@
 import { Redirect, Route } from "react-router";
-import { useAuth } from "../state/UserContext";
+import { useAppState } from "../state/StateContext";
 
 export const AuthenticatedRoute = ({ path, children }: any) => {
   const {
     state: { auth },
-  } = useAuth();
+  } = useAppState();
   return (
     <Route
       path={path}

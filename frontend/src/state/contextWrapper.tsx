@@ -1,12 +1,12 @@
 import { ReactElement } from "react";
-import { UserProvider } from "./UserContext";
+import { StateProvider } from "./StateContext";
 import { ChakraProvider } from "@chakra-ui/react";
 
 export const contextWrapper = (Component: () => ReactElement) => () =>
   (
     <ChakraProvider>
-      <UserProvider>
+      <StateProvider>
         <Component />
-      </UserProvider>
+      </StateProvider>
     </ChakraProvider>
   );

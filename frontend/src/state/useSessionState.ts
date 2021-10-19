@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { useAuth } from "./UserContext";
+import { useAppState } from "./StateContext";
 
 // this maintains logged in state when the user changes the url manually
 export const useSessionState = () => {
@@ -7,7 +7,7 @@ export const useSessionState = () => {
   const {
     dispatch,
     state: { auth },
-  } = useAuth();
+  } = useAppState();
   useEffect(() => {
     const getSessionUser = () => {
       if (auth || !isFirstLoad.current) return;
