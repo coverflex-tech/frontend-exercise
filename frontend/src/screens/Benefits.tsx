@@ -4,10 +4,13 @@ import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { getProducts, Product } from "../api/products";
 import { BenefitCard } from "../components/BenefitCard";
+import { BenefitCardsSkeleton } from "../components/BenefitCardsSkeleton";
 import { Header } from "../components/Header";
 import { purchase } from "../state/orderActions";
 import { useAppState } from "../state/StateContext";
 import { getUser, logout } from "../state/userActions";
+
+type productStatus = "loading" | "error" | "resolved";
 
 export const Benefits = () => {
   const {
@@ -16,6 +19,8 @@ export const Benefits = () => {
   } = useAppState();
   const userId = user!.user_id;
   const history = useHistory();
+  const [loadingProducts, setLoadingProducts] =
+    useState<productStatus>("loading");
   const [products, setProducts] = useState<Product[]>([]);
   const headerlogOut = () => logout(dispatch, () => history.push("/login"));
   const [selectedItems, setSelectedItems] = useState<Product[]>([]);
@@ -31,16 +36,21 @@ export const Benefits = () => {
   const sumPriceSelectedItems = selectedItems.reduce((prev, current) => {
     return current.price + prev;
   }, 0);
+  const expectedBalance = user!.data.balance - sumPriceSelectedItems;
+
+  const purchaseDisabled =
+    loadingOrder || expectedBalance < 0 || selectedItems.length === 0;
 
   useEffect(() => {
-    const getData = async () => {
-      // to avoid out of date order items and balance from session
-      await getUser(dispatch, userId);
-      await getProducts()
-        .then(({ products }) => setProducts(products))
-        .catch((e) => console.log(e));
-    };
-    getData();
+    getProducts()
+      .then(({ products }) => {
+        setProducts(products);
+        setLoadingProducts("resolved");
+
+        // to avoid out of date order items and balance from session
+        getUser(dispatch, userId);
+      })
+      .catch((e) => setLoadingProducts("error"));
   }, [dispatch, userId]);
 
   const makePurchase = () => {
@@ -76,10 +86,8 @@ export const Benefits = () => {
           <Heading as="h3" size="lg" mb="2">
             Choose a selection of benefits
           </Heading>
-          <Wrap spacing={3} justify="center">
-            {filteredProducts.length === 0 && (
-              <Text> You've claimed everything!</Text>
-            )}
+          <Wrap spacing={3} justify="center" w="100%">
+            <BenefitCardsSkeleton loading={loadingProducts === "loading"} />
             {filteredProducts.map((item) => (
               <BenefitCard
                 key={item.id}
@@ -90,20 +98,30 @@ export const Benefits = () => {
               />
             ))}
           </Wrap>
-          {selectedItems.length > 0 && (
+          {filteredProducts.length === 0 && loadingProducts === "resolved" && (
+            <Text> You've claimed everything!</Text>
+          )}
+          {loadingProducts === "error" && (
+            <Text color="red.500">Something went wrong, try again</Text>
+          )}
+
+          {filteredProducts.length !== 0 && (
             <>
-              <Text mt={2}>Selected Value {sumPriceSelectedItems}FP</Text>
+              <Text mt={3}>Selected Value {sumPriceSelectedItems}FP</Text>
               <Text>
                 Remaining balance after purchase:
-                {(user?.data.balance ?? 0) - sumPriceSelectedItems}FP
+                {expectedBalance}FP
               </Text>
-              <Button onClick={makePurchase} isLoading={loadingOrder}>
+              <Button
+                mt="2"
+                colorScheme="teal"
+                onClick={makePurchase}
+                isLoading={loadingOrder}
+                disabled={purchaseDisabled}
+              >
                 Purchase selected items
               </Button>
             </>
-          )}
-          {selectedItems.length === 0 && filteredProducts.length > 0 && (
-            <Text mt={2}>Nothing selected!</Text>
           )}
           {orderError && <Text color="red.500">{orderError}</Text>}
         </Center>
@@ -113,21 +131,25 @@ export const Benefits = () => {
           borderRadius="md"
           shadow="base"
           p={5}
-          mt="4"
+          mt="6"
         >
           <Heading as="h3" size="lg" mb="2">
             Benefits you've already claimed
           </Heading>
-          <Wrap spacing={3} justify="center">
+          <Wrap spacing={3} justify="center" w="100%">
+            <BenefitCardsSkeleton loading={loadingProducts === "loading"} />
             {claimedItems.map((item) => (
               <BenefitCard
                 key={item.id}
                 item={item}
                 selected={false}
-                backgroundColor="gray.100"
+                backgroundColor="gray.200"
               />
             ))}
           </Wrap>
+          {loadingProducts === "error" && (
+            <Text color="red.500">Something went wrong, try again</Text>
+          )}
         </Center>
       </Box>
     </Flex>

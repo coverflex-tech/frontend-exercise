@@ -20,7 +20,7 @@ export const BenefitCard = ({
   const borderProps = selected
     ? {
         border: "2px",
-        borderColor: "green.400",
+        borderColor: "teal.500",
       }
     : {};
 
