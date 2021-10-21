@@ -39,7 +39,7 @@ export const Login = () => {
         minH={220}
       >
         <Heading mb={4}>Login</Heading>
-        <form onSubmit={onSubmit}>
+        <form data-testid="form" onSubmit={onSubmit}>
           <FormControl id="userName" mb={2} isRequired>
             <FormLabel>Username</FormLabel>
             <Input
@@ -58,7 +58,13 @@ export const Login = () => {
           </FormControl>
           <Flex>
             <Spacer />
-            <Button colorScheme="teal" type="submit" isLoading={loadingAuth}>
+            <Button
+              data-testid="login-button"
+              colorScheme="teal"
+              type="submit"
+              isLoading={loadingAuth}
+              disabled={userName === ""}
+            >
               Login
             </Button>
           </Flex>
