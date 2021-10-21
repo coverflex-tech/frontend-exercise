@@ -6,11 +6,11 @@ export const useSessionState = () => {
   const isFirstLoad = useRef(true);
   const {
     dispatch,
-    state: { auth },
+    state: { authenticated },
   } = useAppState();
   useEffect(() => {
     const getSessionUser = () => {
-      if (auth || !isFirstLoad.current) return;
+      if (authenticated || !isFirstLoad.current) return;
       const user = sessionStorage.getItem("user");
       console.log("trying to load from session");
 
@@ -28,5 +28,5 @@ export const useSessionState = () => {
       }
     };
     getSessionUser();
-  }, [auth, dispatch]);
+  }, [authenticated, dispatch]);
 };

@@ -1,21 +1,22 @@
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Box, Flex, Heading, Spacer, Text } from "@chakra-ui/layout";
+import { Box, Flex, Heading, Spacer } from "@chakra-ui/layout";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { Redirect } from "react-router";
+import ErrorText from "../components/ErrorText";
 import { useAppState } from "../state/StateContext";
 import { getUser as login } from "../state/userActions";
 
 export const Login = () => {
   const {
     dispatch,
-    state: { auth, authError, loadingAuth },
+    state: { authenticated, authError, loadingAuth },
   } = useAppState();
 
   const [userName, setUserName] = useState("");
 
-  if (auth) return <Redirect to="/" />;
+  if (authenticated) return <Redirect to="/" />;
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -48,11 +49,12 @@ export const Login = () => {
               onChange={handleChange}
             />
 
-            {!!authError && (
-              <Text mt="2" mb="2" color="red.500">
-                Something went wrong, please try again
-              </Text>
-            )}
+            <ErrorText
+              mt="2"
+              mb="2"
+              visible={!!authError}
+              errorMessage="Something went wrong, please try again"
+            />
           </FormControl>
           <Flex>
             <Spacer />

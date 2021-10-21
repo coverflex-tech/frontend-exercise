@@ -3,13 +3,13 @@ import { useAppState } from "../state/StateContext";
 
 export const AuthenticatedRoute = ({ path, children }: any) => {
   const {
-    state: { auth },
+    state: { authenticated },
   } = useAppState();
   return (
     <Route
       path={path}
       render={({ location }) => {
-        return auth ? (
+        return authenticated ? (
           children
         ) : (
           <Redirect

@@ -8,6 +8,7 @@ const errorMapping = {
   products_already_purchased:
     "Product(s) already purchased, you can't order the same thing twice",
   insufficient_balance: "Your out of flex points",
+  default_message: "Something went wrong, please try again",
 };
 
 export const purchase = (
@@ -33,13 +34,16 @@ export const purchase = (
       });
     })
     .catch(async (reason: HTTPError) => {
-      const json: { error: keyof typeof errorMapping } =
-        await reason.response.json();
+      const isValidHttpError = reason.response && !!reason.response.json;
+
+      const json: { error: keyof typeof errorMapping } = isValidHttpError
+        ? await reason.response.json()
+        : { error: "default_message" };
 
       const error =
         json.error && errorMapping.hasOwnProperty(json.error)
           ? errorMapping[json.error]
-          : reason.response.statusText;
+          : errorMapping["default_message"];
 
       dispatch({ type: "order_failed", payload: { error } });
     });

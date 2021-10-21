@@ -21,12 +21,13 @@ export type Action =
   | { type: "login_failed"; payload: ErrorPayload }
   | { type: "order_start" }
   | { type: "order_completed"; payload: OrderPayload }
-  | { type: "order_failed"; payload: ErrorPayload };
+  | { type: "order_failed"; payload: ErrorPayload }
+  | { type: "order_idle" };
 
 export type Dispatch = (action: Action) => void;
 
 export type State = {
-  auth: boolean;
+  authenticated: boolean;
   user: User | null;
   authError: string | null;
   orderError: string | null;
@@ -51,7 +52,7 @@ export const Reducer: React.Reducer<State, Action> = (
     case "login_success": {
       return {
         ...state,
-        auth: true,
+        authenticated: true,
         user: action.payload.user,
         loadingAuth: false,
         authError: null,
@@ -60,14 +61,14 @@ export const Reducer: React.Reducer<State, Action> = (
     case "login_failed": {
       return {
         ...state,
-        auth: false,
+        authenticated: false,
         user: null,
         loadingAuth: false,
         authError: action.payload.error,
       };
     }
     case "logout": {
-      return { ...state, auth: false, user: null };
+      return { ...state, authenticated: false, user: null };
     }
     case "order_start": {
       return { ...state, loadingOrder: true, orderError: null };
@@ -76,6 +77,13 @@ export const Reducer: React.Reducer<State, Action> = (
       return {
         ...state,
         orderError: action.payload.error,
+        loadingOrder: false,
+      };
+    }
+    case "order_idle": {
+      return {
+        ...state,
+        orderError: null,
         loadingOrder: false,
       };
     }
@@ -107,7 +115,7 @@ export const Reducer: React.Reducer<State, Action> = (
 
 export function StateProvider({ children }: StateProviderProps) {
   const [state, dispatch] = React.useReducer(Reducer, {
-    auth: false,
+    authenticated: false,
     user: null,
     loadingAuth: false,
     loadingOrder: false,

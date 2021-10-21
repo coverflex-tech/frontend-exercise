@@ -6,7 +6,9 @@ import { getProducts, Product } from "../api/products";
 import { BenefitCard } from "../components/BenefitCard";
 import { BenefitCardsSkeleton } from "../components/BenefitCardsSkeleton";
 import { BenefitsContainer } from "../components/BenefitsContainer";
+import ErrorText from "../components/ErrorText";
 import { Header } from "../components/Header";
+import { InfoText } from "../components/InfoText";
 import { purchase } from "../state/orderActions";
 import { useAppState } from "../state/StateContext";
 import { getUser, logout } from "../state/userActions";
@@ -43,6 +45,7 @@ export const Benefits = () => {
     loadingOrder || expectedBalance < 0 || selectedItems.length === 0;
 
   useEffect(() => {
+    dispatch({ type: "order_idle" });
     getProducts()
       .then(({ products }) => {
         setProducts(products);
@@ -96,17 +99,21 @@ export const Benefits = () => {
           {filteredProducts.length === 0 && loadingProducts === "resolved" && (
             <Text> You've claimed everything!</Text>
           )}
-          {loadingProducts === "error" && (
-            <Text color="red.500">Something went wrong, try again</Text>
-          )}
 
+          <ErrorText
+            errorMessage="Something went wrong, try again"
+            visible={loadingProducts === "error"}
+          />
           {filteredProducts.length !== 0 && (
             <>
-              <Text mt={3}>Selected Value {sumPriceSelectedItems}FP</Text>
-              <Text>
-                Remaining balance after purchase:
-                {expectedBalance}FP
-              </Text>
+              <InfoText
+                label="Selected Value"
+                info={`${sumPriceSelectedItems}FP`}
+              />
+              <InfoText
+                label="Balance after purchase"
+                info={`${expectedBalance}FP`}
+              />
               <Button
                 mt="2"
                 colorScheme="teal"
@@ -114,11 +121,11 @@ export const Benefits = () => {
                 isLoading={loadingOrder}
                 disabled={purchaseDisabled}
               >
-                Purchase selected items
+                Claim selected
               </Button>
             </>
           )}
-          {orderError && <Text color="red.500">{orderError}</Text>}
+          <ErrorText errorMessage={orderError ?? ""} visible={!!orderError} />
         </BenefitsContainer>
         <BenefitsContainer mt="6">
           <Heading as="h3" size="lg" mb="2">
@@ -135,10 +142,13 @@ export const Benefits = () => {
               />
             ))}
           </Wrap>
-          {loadingProducts === "error" && (
-            <Text color="red.500">Something went wrong, try again</Text>
+          <ErrorText
+            errorMessage="Something went wrong, try again"
+            visible={loadingProducts === "error"}
+          />
+          {claimedItems.length === 0 && loadingProducts === "resolved" && (
+            <Text>No benefits claimed yet</Text>
           )}
-          {claimedItems.length === 0 && <Text>No benefits claimed yet</Text>}
         </BenefitsContainer>
       </Box>
     </Flex>
