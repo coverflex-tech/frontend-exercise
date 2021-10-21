@@ -1,3 +1,7 @@
+Make sure to run `yarn install` before anything else.
+
+The app entry point is src/App.tsx.
+
 ## Available Scripts
 
 In the project directory, you can run:
