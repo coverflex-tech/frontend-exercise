@@ -1,0 +1,441 @@
+@import url("//fonts.googleapis.com/css?family=Muli");
+$white: white;
+$black: black;
+$nav-height: 8vh;
+$desk: 1000px;
+$rounded: 20px;
+$rounded-btn: 24px;
+
+$color1: #f8f4f2;
+$color2: #142e47;
+$color3:#09141E;
+$color4: #e0e0e0;
+$color5: #6e9fbc;
+
+* {
+    font-family: "Muli";
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+}
+
+html, body {
+    //overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    }
+}
+
+.small-icon {
+    width: 1.5em;
+    height: 1.5em;
+}
+
+.btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.primary-btn {
+    background-color: $color5;
+    color: $color1;
+    border: none;
+    padding:0.5em 0.5em 0.5em 0.5em;
+    font-size: 12px;
+    border-radius: $rounded-btn;
+    width: 75%;
+}
+
+.primary-btn:hover {
+    background-color: $color2;
+    transition: 0.3s;
+}
+
+.primary-btn:focus {     
+    background-color: $color4;
+}
+
+.secundary-btn {
+    background-color: $color5;
+    color: $color1;
+    border: none;
+    padding:0.5em 0.5em 0.5em 0.5em;
+    font-size: 12px;
+    border-radius: $rounded-btn;
+    width: 75%;
+    margin-top: 1em;
+}
+
+.secundary-btn:hover, .secondary-btn:focus {
+    background-color: $color1;
+    color: $color5;
+    transition: 0.3s;
+}
+
+.App, #root {
+    width: 100%;
+    height: 100%;
+}
+
+.signin {
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        background: white;
+        width: 25em;
+        border-radius: 1em;
+    }
+
+   .center h1 {
+        text-align: center;
+        padding: 0 0 1em 0;
+        border-bottom: 1px solid #e0e0e0;
+        color: #556eb1;
+    }
+
+   .center form {
+        padding: 0 1em;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+   form .txt_field {
+        position: relative;
+        border-bottom: 2px solid #adadad;
+        margin: 30px 0;
+    }
+
+    .txt_field input {
+        width: 100%;
+        padding: 0 5px;
+        height: 40px;
+        font-size: 16px;
+        border: none;
+        background: none;
+        outline: none;
+   }
+
+    .txt_field label {
+        position: absolute;
+        top: 50%;
+        left: 5px;
+        color: #adadad;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        font-size: 16px;
+        pointer-events: none;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+    }
+
+    .txt_field span::before {
+        content: "";
+        position: absolute;
+        top: 40px;
+        left: 0;
+        width: 0%;
+        height: 2px;
+        background: #556eb1;
+        -webkit-transform: 0.5s;
+        transform: 0.5s;
+    }
+
+    .txt_field input:focus ~ label,
+    .txt_field input:valid ~ label {
+        top: -5px;
+        color: #556eb1;
+    }
+
+    .txt_field input:focus ~ span::before,
+    .txt_field input:valid ~ span::before {
+        width: 100%;
+    }
+
+    .pass {
+        margin: 5px 0 20px 5px;
+        color: #adadad;
+        cursor: pointer;
+    }
+
+    .pass:hover {
+        text-decoration: underline;
+    }
+
+    input[type="submit"] {
+        width: 100%;
+        height: 50px;
+        border: 1px solid;
+        background: #556eb1;
+        border-radius: $rounded;
+        font-size: 18px;
+        color: white;
+        cursor: pointer;
+        outline: none;
+        margin-bottom: 1em;
+    }
+
+    input[type="submit"]:hover {
+        background: #5caed3;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+    }
+}
+
+/****** NAV BAR ******/
+
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: $nav-height;
+    position: relative;
+    background-color: $color2;
+    box-shadow: $color4 0px 10px 15px;
+    width: 100%;
+
+    a {
+        color: $color1;
+        text-decoration: none;
+        transition: 0.3s;
+    &:hover {
+        opacity: 0.7;
+      }
+   }
+
+    .logo {
+        font-size: 24px;
+        letter-spacing: 4px;
+    }
+
+    .nav-list {
+        list-style: none;
+        display: flex;
+        z-index: 10;
+        //display: none;
+        flex-direction: column;
+        position: absolute;
+        top: $nav-height;
+        right: 0;
+        height: calc(100vh - 8vh);
+        width: 50vw;
+        background: $black;
+        align-items: center;
+        row-gap: 20px;
+        padding: 20px 0;
+        color: $color1;
+
+        li {
+            letter-spacing: 3px;
+            margin-left: 32px;
+        }
+
+        p {
+            width: fit-content;
+            display: flex;
+            align-items: center;
+            column-gap: 0.5em;
+        }
+
+    @media (min-width: $desk) {
+        flex-direction: row;
+        position: static;
+        height: 8vh;
+        width: fit-content;
+        .active {
+            transform: translateX(0);
+            }
+        }
+    }
+
+    .mobile-menu {
+        cursor: pointer;
+        div {
+            width: 32px;
+            height: 2px;
+            background: $white;
+            margin: 8px;
+      }
+
+        @media (min-width: $desk) {
+            display: none;
+        }
+    }
+}
+
+/****** MAIN ******/
+
+main {
+   flex: 1;
+   @media(min-width: $desk) {
+        padding: 0 1em;
+   }
+   h2 {
+       font-size: 1.5em;
+       color: $color2;
+       letter-spacing: 1px;
+       text-transform: uppercase;
+   }
+}
+
+#main-container {
+   display: flex;
+   flex-direction: column;
+   row-gap: 20px;
+   height: 100%;
+   width: 100%;
+   height: calc(100% - 8vh);
+   overflow: auto;
+   background-image: linear-gradient(180deg, $color1, $color4);
+   padding: 1.5em 1em 1em 1em;
+   position: relative;
+   
+   @media (min-width: $desk) {
+      flex-direction: row;
+   }
+}
+
+/****** PRODUCTS ******/
+
+#products {
+   width: 100%;
+   display: flex;
+   justify-content: space-around;
+   flex-wrap: wrap;
+   gap: 1em;
+   margin-top: 0.75em;
+
+   h3 {
+        text-align: center;
+        font-size: 0.75em;
+        color: $color5;
+        margin-top: 0.5em;
+        margin-bottom: 0.75em;
+        //font-weight: bold;
+        text-transform: uppercase;
+        height: 2em;
+    }
+
+    h4 {
+        text-align: center;
+        font-size: 0.7em;
+        color: $color2;
+        margin-bottom: 0.65em;
+    }
+
+   @media (min-width: $desk) {
+      justify-content: flex-start;
+   }
+
+   .product-container {
+      background-color: white;
+      width: 45%;
+      //border: 1px solid black;
+      box-shadow: $color4 0px 8px 24px;
+      padding: 0.5em;
+      border-radius: $rounded;
+      overflow: hidden;
+      
+      @media (min-width: $desk) {
+         width: 15%;
+         min-width: 150px;
+      }
+
+      .img-container {
+         object-fit: cover;
+         width: 100%;
+         height: 180px;
+         display: flex;
+         align-items: center;
+         justify-content: center;
+      }
+   }
+}
+
+/****** BASKET ******/
+
+#basket {
+    width: 100%;
+    height: 300px;
+    background-color: $color2;
+    box-shadow: $color4 0px 8px 24px;
+    border-radius: $rounded;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    & > *:not(:first-child){
+        margin-top: 1em;
+    }
+
+    h2{
+        font-size: 1.25em;
+    }
+
+    h2, h3 {
+        color: $color1;
+    }
+    p {
+        color: $color5;
+    }
+
+    @media (min-width: $desk) {
+        height: 100%;
+        width: 20%;
+        padding: 10px;
+        margin-top: 2.51em;
+        position: sticky;
+        top: 0;
+        right: 0;
+    }
+    #basket-items{
+        overflow-y: auto;
+        max-height: 50%;
+    }
+    .basket-product-container{
+        max-height: 50%;
+    }
+    .remove-btn{
+        background-color: transparent;
+    }
+    .basket-product, .basket-total {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        @media(min-width: $desk) {
+            flex-direction: column;
+        }
+
+    }
+    .basket-product p {
+        display: flex;
+        column-gap: 0.65rem;
+        color: $color5;
+        @media(min-width: $desk) {
+            justify-content: space-between;
+        }
+    }
+    
+    
+}
+
