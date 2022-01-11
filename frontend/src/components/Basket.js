@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect } from "react";
+//import { useEffect } from "react";
 
 export default function Basket(props) {
 
@@ -9,11 +9,11 @@ export default function Basket(props) {
     const currentBalance = totalBalance - itemsPrice;
 
     // Update using the browser API
-    useEffect(() => {
+    /*useEffect(() => {
         const event = new CustomEvent('cartUpdate', {
             detail: cartItems
         });
-    });
+    });*/
 
     return (
         <aside id="basket">

@@ -4,8 +4,6 @@ import Signin from './components/Signin';
 import Header from "./components/Header";
 import Home from "./components/Home";
 
-// Data base
-import productsAvailable from "./data/productsData";
 //import users from './data/UserData';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
@@ -15,18 +13,8 @@ class App extends Component {
    constructor(props) {
       super(props);
       this.state = {
-         products: productsAvailable,
-         cartItems: [],
+         cartItems: []
       };
-
-      var rootElement = document.getElementById('root'); 
-
-      // Listen for the event
-      rootElement.addEventListener('cartUpdate', function (e) { 
-         e.preventDefault();
-         //this.setState(cartItems)
-         console.log(e.detail)
-       }, false);
    }
 
 

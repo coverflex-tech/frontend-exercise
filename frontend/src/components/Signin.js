@@ -1,75 +1,57 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 
 // ### User component for sign in
 
-function Signin() {
+class Signin extends Component {
 
-  const [userId, serUserId] = useState('')
+  constructor(props) {
+    super(props)
+    this.state = {
+      user_id: '',
 
-  const onSubmitHandler = event => {
+    }
+    this.changeUserIdHandler = this.changeUserIdHandler.bind(this);
+    this.saveUserId = this.saveUserId.bind(this);
+  }
 
-    event.preventDefault()
-    const user = { userId }
+  changeUserIdHandler = (event) => {
+    this.setState({ user_id: event.target.value });
+  }
 
-    // API POST
-    fetch('https://reqres.in/api/users', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/jsom' },
-      body: JSON.stringify(user)
-    })
-      .then(answer => {
-        if (answer.ok) {
-          serUserId('')
-          alert('Usuário criado')
-        }
+  saveUserId = (e) => {
+    e.preventDefault();
+    let newUser = this.state.user_id;
+    this.getUser(newUser)
+    //console.log('newUser=>' + JSON.stringify(newUser));
+  }
+
+  getUser(user) {
+    fetch(`http://localhost:4000/api/users/${user}`)//
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ user: data.user });
       })
   }
 
-  // API GET
-  /*componentDidMount() {
-    //`GET /api/users/:user_id`
-    //returns a single user
-    //if user_id doesn't exist, it creates a new user
-    //output `{"user": {"user_id": "johndoe", "data": {"balance": 500, "product_ids": [...]}}}`
-
-    fetch('https://reqres.in/api/users')
-      .then(answer => answer.json())
-      .then(userData => {
-        //console.log(userData.data)
-        //Convert data to an object
-        const users = userData.data.map(user => ({
-          id: user.id,
-          name: user.first_name,
-          lastname: user.last_name,
-          email: user.email
-        }))
-        //console.log(users)
-        //this.setState({users: users})
-      })
-  }*/
-
-  return (
-    <div className="signin">
-      <div className="center">
-        <h1>Sign in</h1>
-        <form method="post" onSubmit={onSubmitHandler}>
-          <div className="txt_field">
-            <input type="text" required></input>
-            <span></span>
-            <label>Username</label>
+  render() {
+    return (
+      <div className="signin">
+        <div className="signin-container">
+          <div className="signin-row">
+            <h2>Sign in</h2>
+            <form>
+              <div className="">
+                <label>First Name:</label>
+                <input placeholder="First Name" name="user_id" className="form-control"
+                  value={this.state.user_id} onChange={this.changeUserIdHandler}/>
+              </div>
+              <button className="btn btn-success" onClick={this.saveUserId}>Save</button>
+            </form>
           </div>
-          <div className="txt_field">
-            <input type="password" required></input>
-            <span></span>
-            <label>Password</label>
-          </div>
-          <div className="div-btn">
-            <button className="primary-btn" type="submit" value="Sign in">Sign in</button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
-  );
+    )
+  }
 }
 
 export default Signin;

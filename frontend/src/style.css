@@ -13,9 +13,17 @@ html, body {
   width: 100%;
 }
 
-html img, body img {
-  max-width: 100%;
-  max-height: 100%;
+h2 {
+  font-size: 1.5em;
+  color: #142e47;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.img-simulation {
+  width: 200px;
+  height: 150px;
+  background-color: #b6b6b6;
 }
 
 .small-icon {
@@ -88,118 +96,6 @@ button {
 .App, #root {
   width: 100%;
   height: 100%;
-}
-
-.signin body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-}
-
-.signin .center {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-  background: white;
-  width: 25em;
-  border-radius: 1em;
-}
-
-.signin .center h1 {
-  text-align: center;
-  padding: 0 0 1em 0;
-  border-bottom: 1px solid #e0e0e0;
-  color: #556eb1;
-}
-
-.signin .center form {
-  padding: 0 1em;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-.signin form .txt_field {
-  position: relative;
-  border-bottom: 2px solid #adadad;
-  margin: 30px 0;
-}
-
-.signin .txt_field input {
-  width: 100%;
-  padding: 0 5px;
-  height: 40px;
-  font-size: 16px;
-  border: none;
-  background: none;
-  outline: none;
-}
-
-.signin .txt_field label {
-  position: absolute;
-  top: 50%;
-  left: 5px;
-  color: #adadad;
-  -webkit-transform: translateY(-50%);
-  transform: translateY(-50%);
-  font-size: 16px;
-  pointer-events: none;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-}
-
-.signin .txt_field span::before {
-  content: "";
-  position: absolute;
-  top: 40px;
-  left: 0;
-  width: 0%;
-  height: 2px;
-  background: #556eb1;
-  -webkit-transform: 0.5s;
-  transform: 0.5s;
-}
-
-.signin .txt_field input:focus ~ label,
-.signin .txt_field input:valid ~ label {
-  top: -5px;
-  color: #556eb1;
-}
-
-.signin .txt_field input:focus ~ span::before,
-.signin .txt_field input:valid ~ span::before {
-  width: 100%;
-}
-
-.signin .pass {
-  margin: 5px 0 20px 5px;
-  color: #adadad;
-  cursor: pointer;
-}
-
-.signin .pass:hover {
-  text-decoration: underline;
-}
-
-.signin input[type="submit"] {
-  width: 100%;
-  height: 50px;
-  border: 1px solid;
-  background: #556eb1;
-  border-radius: 20px;
-  font-size: 18px;
-  color: white;
-  cursor: pointer;
-  outline: none;
-  margin-bottom: 1em;
-}
-
-.signin input[type="submit"]:hover {
-  background: #5caed3;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
 }
 
 /****** NAV BAR ******/
@@ -314,6 +210,7 @@ nav .mobile-menu div {
   }
 }
 
+/****** SIGN IN ******/
 /****** MAIN ******/
 main {
   -webkit-box-flex: 1;
@@ -325,13 +222,6 @@ main {
   main {
     padding: 0 1em;
   }
-}
-
-main h2 {
-  font-size: 1.5em;
-  color: #142e47;
-  letter-spacing: 1px;
-  text-transform: uppercase;
 }
 
 #main-container {
