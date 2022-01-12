@@ -2,28 +2,22 @@ import React, { Component } from "react";
 import Product from "./Product";
 
 class Main extends Component {
+   
    constructor(props) {
       super(props)
       this.state = { products: [] }
    }
-   
+
    componentDidMount() {
       this.getAllProducts()
    }
 
    getAllProducts() {
       fetch('http://localhost:4000/api/products')
-      .then(response => response.json())
-      .then(data => {
-         this.setState({ products: data.products });
-         console.log(this.state.products)
-      })
-      /*.then(products => {
-         console.log(products.data)
-         const produt= products.data.map(produto => {
-            console.log(products.data)
+         .then(response => response.json())
+         .then(data => {
+            this.setState({ products: data.products });
          })
-      })*/
    }
 
    render() {

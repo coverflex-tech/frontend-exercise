@@ -1,7 +1,7 @@
-//import React from "react";
-
 export default function Product(props) {
+
    const { product, onAddProduct } = props;
+   
    return (
       <div className="product-container">
         <div className="img-container">

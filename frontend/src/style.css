@@ -1,4 +1,6 @@
 @import url("//fonts.googleapis.com/css?family=Muli");
+/****** VARS ******/
+/****** APPLY ALL ******/
 * {
   font-family: "Muli";
   margin: 0;
@@ -147,7 +149,7 @@ nav .nav-list {
   right: 0;
   height: calc(100vh - 8vh);
   width: 50vw;
-  background: black;
+  background: #142e47;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -211,6 +213,106 @@ nav .mobile-menu div {
 }
 
 /****** SIGN IN ******/
+.signin {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  height: 100%;
+  width: 100%;
+  height: calc(100% - 8vh);
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f4f2), to(#e0e0e0));
+  background-image: linear-gradient(180deg, #f8f4f2, #e0e0e0);
+}
+
+.signin .box-container {
+  background: white;
+  width: 25em;
+  border-radius: 1em;
+  -webkit-box-shadow: #e0e0e0 0px 8px 24px;
+          box-shadow: #e0e0e0 0px 8px 24px;
+  padding: 1em;
+}
+
+.signin .box-container h2 {
+  text-align: center;
+  padding: 0 1em;
+}
+
+.signin .box-container form {
+  padding: 0 1em;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.signin form .txt_field {
+  position: relative;
+  border-bottom: 2px solid #6e9fbc;
+  margin: 30px 0;
+}
+
+.signin .txt_field input {
+  width: 100%;
+  padding: 0 5px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  background: none;
+  outline: none;
+  color: #142e47;
+}
+
+.signin .txt_field input:focus ~ label,
+.signin .txt_field input:valid ~ label {
+  top: -5px;
+  color: #142e47;
+}
+
+.signin .txt_field input:focus ~ span::before,
+.signin .txt_field input:valid ~ span::before {
+  width: 100%;
+}
+
+.signin .txt_field label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  color: #6e9fbc;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  font-size: 16px;
+  pointer-events: none;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.signin .txt_field span::before {
+  content: "";
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: #142e47;
+  -webkit-transform: 0.5s;
+  transform: 0.5s;
+}
+
+.signin .pass {
+  margin: 5px 0 20px 5px;
+  color: #adadad;
+  cursor: pointer;
+}
+
+.signin .pass :hover {
+  text-decoration: underline;
+}
+
 /****** MAIN ******/
 main {
   -webkit-box-flex: 1;
@@ -293,6 +395,9 @@ main {
 
 #products .product-container {
   background-color: white;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   width: 45%;
   -webkit-box-shadow: #e0e0e0 0px 8px 24px;
           box-shadow: #e0e0e0 0px 8px 24px;

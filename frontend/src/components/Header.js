@@ -1,7 +1,4 @@
-import React from 'react';
-import { useState } from "react";
-import UserComponent from './Signin';
-import App from '../App';
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function Header(props) {
@@ -10,12 +7,12 @@ export default function Header(props) {
 
     const showSidebar = () => setSidebar(!openSidebar);
 
-    const [dimensions, setDimensions] = React.useState({
+    const [dimensions, setDimensions] = useState({
         height: window.innerHeight,
         width: window.innerWidth
     })
 
-    React.useEffect(() => {
+    useEffect(() => {
         function handleResize() {
             setDimensions({
                 height: window.innerHeight,
@@ -26,7 +23,6 @@ export default function Header(props) {
     })
 
     return (
-
         < header >
             <nav>
                 <a href="/" className="logo">Coverflex Challenge</a>

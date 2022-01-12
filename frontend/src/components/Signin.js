@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 
-// ### User component for sign in
-
 class Signin extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
       user_id: '',
-
     }
     this.changeUserIdHandler = this.changeUserIdHandler.bind(this);
     this.saveUserId = this.saveUserId.bind(this);
@@ -22,34 +19,47 @@ class Signin extends Component {
     e.preventDefault();
     let newUser = this.state.user_id;
     this.getUser(newUser)
-    //console.log('newUser=>' + JSON.stringify(newUser));
   }
 
   getUser(user) {
-    fetch(`http://localhost:4000/api/users/${user}`)//
+    fetch(`http://localhost:4000/api/users/${user}`)
       .then(response => response.json())
       .then(data => {
         this.setState({ user: data.user });
+        localStorage.setItem('myUser', data.user.user_id);
       })
   }
 
   render() {
     return (
       <div className="signin">
-        <div className="signin-container">
-          <div className="signin-row">
-            <h2>Sign in</h2>
-            <form>
-              <div className="">
-                <label>First Name:</label>
-                <input placeholder="First Name" name="user_id" className="form-control"
-                  value={this.state.user_id} onChange={this.changeUserIdHandler}/>
-              </div>
-              <button className="btn btn-success" onClick={this.saveUserId}>Save</button>
-            </form>
-          </div>
-        </div>
-      </div>
+        <div className="box-container">
+          <h2>Sign in</h2>
+          <form method="post">
+            <div className="txt_field">
+              <input
+                name="user_id"
+                className="form-control"
+                value={this.state.user_id}
+                onChange={this.changeUserIdHandler}
+                autoComplete="off"
+                required
+                type="text"
+              />
+              <span></span>
+              <label>Username</label>
+            </div>
+            <div className="txt_field">
+              <input type="password" required></input>
+              <span></span>
+              <label>Password</label>
+            </div>
+            <div className="btn-container">
+              <button className="primary-btn" onClick={this.saveUserId}>Save</button>
+            </div>
+          </form>
+        </div >
+      </div >
     )
   }
 }

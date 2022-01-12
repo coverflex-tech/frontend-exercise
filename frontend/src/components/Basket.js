@@ -1,5 +1,4 @@
 import React from 'react';
-//import { useEffect } from "react";
 
 export default function Basket(props) {
 
@@ -8,12 +7,33 @@ export default function Basket(props) {
     const totalBalance = 500;
     const currentBalance = totalBalance - itemsPrice;
 
-    // Update using the browser API
-    /*useEffect(() => {
-        const event = new CustomEvent('cartUpdate', {
-            detail: cartItems
-        });
-    });*/
+    function postOrder() {
+        let itemsIds =  getItemsIds();
+
+        let userId = window.localStorage.getItem('myUser');
+        let order = {items: itemsIds,  user_id: userId};
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({order})
+        }
+        fetch('http://localhost:4000/api/orders', requestOptions)
+            .then(response => response.json())
+            .then(() => alert('Your order was successful!'))
+            .catch(() => alert('Something went wrong with your request :(')
+        )
+    }
+
+    function getItemsIds() {
+        let itemsIds = [];
+        for (let item of cartItems) {
+            itemsIds.push(item.id)
+        }
+        return itemsIds;
+    }
 
     return (
         <aside id="basket">
@@ -48,7 +68,7 @@ export default function Basket(props) {
                         <hr></hr>
                         <h2 className="basket-total">Total Price<span>{itemsPrice} Flexpoints</span></h2>
                         <div className="btn-container">
-                            <button className="secundary-btn" onClick={() => alert('Implement Checkout')}>
+                            <button className="secundary-btn" onClick={() => postOrder()}>
                                 Checkout
                             </button>
                         </div>

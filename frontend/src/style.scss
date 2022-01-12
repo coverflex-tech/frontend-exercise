@@ -1,16 +1,19 @@
 @import url("//fonts.googleapis.com/css?family=Muli");
-$white: white;
-$black: black;
+
+/****** VARS ******/
+
 $nav-height: 8vh;
 $desk: 1000px;
 $rounded: 20px;
 $rounded-btn: 24px;
+// Colors
+$white: white;
+$light-grey: #f8f4f2;
+$light-blue: #6e9fbc;
+$grey: #e0e0e0;
+$dark-blue: #142e47;
 
-$color1: #f8f4f2;
-$color2: #142e47;
-$color3:#09141E;
-$color4: #e0e0e0;
-$color5: #6e9fbc;
+/****** APPLY ALL ******/
 
 * {
     font-family: "Muli";
@@ -21,19 +24,18 @@ $color5: #6e9fbc;
 }
 
 html, body {
-    //overflow-x: hidden;
     height: 100%;
     width: 100%;
 }
 
 h2 {
     font-size: 1.5em;
-    color: $color2;
+    color: $dark-blue;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
-.img-simulation{
+.img-simulation {
     width: 200px;
     height: 150px;
     background-color: #b6b6b6;
@@ -49,16 +51,15 @@ h2 {
     align-items: center;
     justify-content: center;
 }
- 
-button {
+ button {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .primary-btn {
-    background-color: $color5;
-    color: $color1;
+    background-color: $light-blue;
+    color: $light-grey;
     border: none;
     padding:0.5em 0.5em 0.5em 0.5em;
     font-size: 12px;
@@ -67,17 +68,17 @@ button {
 }
 
 .primary-btn:hover {
-    background-color: $color2;
+    background-color: $dark-blue;
     transition: 0.3s;
 }
 
 .primary-btn:focus {     
-    background-color: $color4;
+    background-color: $grey;
 }
 
 .secundary-btn {
-    background-color: $color5;
-    color: $color1;
+    background-color: $light-blue;
+    color: $light-grey;
     border: none;
     padding:0.5em 0.5em 0.5em 0.5em;
     font-size: 12px;
@@ -87,8 +88,8 @@ button {
 }
 
 .secundary-btn:hover, .secondary-btn:focus {
-    background-color: $color1;
-    color: $color5;
+    background-color: $light-grey;
+    color: $light-blue;
     transition: 0.3s;
 }
 
@@ -105,14 +106,15 @@ nav {
     align-items: center;
     height: $nav-height;
     position: relative;
-    background-color: $color2;
-    box-shadow: $color4 0px 10px 15px;
+    background-color: $dark-blue;
+    box-shadow: $grey 0px 10px 15px;
     width: 100%;
 
     a {
-        color: $color1;
+        color: $light-grey;
         text-decoration: none;
         transition: 0.3s;
+
     &:hover {
         opacity: 0.7;
       }
@@ -127,18 +129,17 @@ nav {
         list-style: none;
         display: flex;
         z-index: 10;
-        //display: none;
         flex-direction: column;
         position: absolute;
         top: $nav-height;
         right: 0;
         height: calc(100vh - 8vh);
         width: 50vw;
-        background: $black;
+        background: $dark-blue;
         align-items: center;
         row-gap: 20px;
         padding: 20px 0;
-        color: $color1;
+        color: $light-grey;
 
         li {
             letter-spacing: 3px;
@@ -157,6 +158,7 @@ nav {
         position: static;
         height: 8vh;
         width: fit-content;
+
         .active {
             transform: translateX(0);
             }
@@ -165,6 +167,7 @@ nav {
 
     .mobile-menu {
         cursor: pointer;
+
         div {
             width: 32px;
             height: 2px;
@@ -181,33 +184,123 @@ nav {
 /****** SIGN IN ******/
 
 .signin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    height: calc(100% - 8vh);
+    background-image: linear-gradient(180deg, $light-grey, $grey);
+    .box-container {
+        background: $white;
+        width: 25em;
+        border-radius: 1em;
+        box-shadow: $grey 0px 8px 24px;
+        padding: 1em;
 
+        h2 {
+            text-align: center;
+            padding: 0 1em;
+        }
+
+        form {
+            padding: 0 1em;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+    }
+
+   form .txt_field {
+        position: relative;
+        border-bottom: 2px solid $light-blue;
+        margin: 30px 0;
+    }
+
+    .txt_field {
+
+        input {
+            width: 100%;
+            padding: 0 5px;
+            height: 40px;
+            font-size: 16px;
+            border: none;
+            background: none;
+            outline: none;
+            color:$dark-blue;
+        }
+
+        input:focus ~ label,
+        input:valid ~ label {
+            top: -5px;
+            color: $dark-blue;
+        }
+
+        input:focus ~ span::before,
+        input:valid ~ span::before {
+            width: 100%;
+        }
+
+        label {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            color: $light-blue;
+            -webkit-transform: translateY(-50%);
+            transform: translateY(-50%);
+            font-size: 16px;
+            pointer-events: none;
+            -webkit-transition: 0.5s;
+            transition: 0.5s;
+        }
+
+        span::before {
+            content: "";
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: $dark-blue;
+            -webkit-transform: 0.5s;
+            transform: 0.5s;
+        }
+    }
+
+    .pass {
+        margin: 5px 0 20px 5px;
+        color: #adadad;
+        cursor: pointer;
+        :hover {
+            text-decoration: underline;
+        }
+    }
 }
 
 /****** MAIN ******/
 
 main {
-   flex: 1;
-   @media(min-width: $desk) {
+    flex: 1;
+
+    @media(min-width: $desk) {
         padding: 0 1em;
-   }
+    }
 }
 
 #main-container {
-   display: flex;
-   flex-direction: column;
-   row-gap: 20px;
-   height: 100%;
-   width: 100%;
-   height: calc(100% - 8vh);
-   overflow: auto;
-   background-image: linear-gradient(180deg, $color1, $color4);
-   padding: 1.5em 1em 1em 1em;
-   position: relative;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    height: 100%;
+    width: 100%;
+    height: calc(100% - 8vh);
+    overflow: auto;
+    background-image: linear-gradient(180deg, $light-grey, $grey);
+    padding: 1.5em 1em 1em 1em;
+    position: relative;
    
-   @media (min-width: $desk) {
-      flex-direction: row;
-   }
+    @media (min-width: $desk) {
+        flex-direction: row;
+    }
 }
 
 /****** PRODUCTS ******/
@@ -223,10 +316,9 @@ main {
    h3 {
         text-align: center;
         font-size: 0.75em;
-        color: $color5;
+        color: $light-blue;
         margin-top: 0.5em;
         margin-bottom: 0.75em;
-        //font-weight: bold;
         text-transform: uppercase;
         height: 2em;
     }
@@ -234,37 +326,37 @@ main {
     h4 {
         text-align: center;
         font-size: 0.7em;
-        color: $color2;
+        color: $dark-blue;
         margin-bottom: 0.65em;
     }
 
-   @media (min-width: $desk) {
-      justify-content: flex-start;
-   }
+    @media (min-width: $desk) {
+        justify-content: flex-start;
+    }
 
-   .product-container {
-      background-color: white;
-      width: 45%;
-      //border: 1px solid black;
-      box-shadow: $color4 0px 8px 24px;
-      padding: 0.5em;
-      border-radius: $rounded;
-      overflow: hidden;
-      
-      @media (min-width: $desk) {
-         width: 15%;
-         min-width: 150px;
-      }
+    .product-container {
+        background-color: $white;
+        height: fit-content;
+        width: 45%;
+        box-shadow: $grey 0px 8px 24px;
+        padding: 0.5em;
+        border-radius: $rounded;
+        overflow: hidden;
+        
+        @media (min-width: $desk) {
+            width: 15%;
+            min-width: 150px;
+        }
 
-      .img-container {
-         object-fit: cover;
-         width: 100%;
-         height: 180px;
-         display: flex;
-         align-items: center;
-         justify-content: center;
-      }
-   }
+        .img-container {
+            object-fit: cover;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
 }
 
 /****** BASKET ******/
@@ -272,12 +364,13 @@ main {
 #basket {
     width: 100%;
     height: 300px;
-    background-color: $color2;
-    box-shadow: $color4 0px 8px 24px;
+    background-color: $dark-blue;
+    box-shadow: $grey 0px 8px 24px;
     border-radius: $rounded;
     padding: 1em;
     display: flex;
     flex-direction: column;
+
     & > *:not(:first-child){
         margin-top: 1em;
     }
@@ -287,10 +380,11 @@ main {
     }
 
     h2, h3 {
-        color: $color1;
+        color: $light-grey;
     }
+
     p {
-        color: $color5;
+        color: $light-blue;
     }
 
     @media (min-width: $desk) {
@@ -302,16 +396,20 @@ main {
         top: 0;
         right: 0;
     }
+
     #basket-items{
         overflow-y: auto;
         max-height: 50%;
     }
+
     .basket-product-container{
         max-height: 50%;
     }
+
     .remove-btn{
         background-color: transparent;
     }
+
     .basket-product, .basket-total {
         display: flex;
         width: 100%;
@@ -319,17 +417,14 @@ main {
         @media(min-width: $desk) {
             flex-direction: column;
         }
-
     }
+
     .basket-product p {
         display: flex;
         column-gap: 0.65rem;
-        color: $color5;
+        color: $light-blue;
         @media(min-width: $desk) {
             justify-content: space-between;
         }
     }
-    
-    
 }
-
